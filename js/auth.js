@@ -172,11 +172,3 @@ if (formularioLogin) {
         }
     });
 }
-
-function fazerLogout() {
-    // 1. Apaga a credencial do usuário logado
-    localStorage.removeItem("usuarioLogado");
-    
-    // 2. Redireciona imediatamente para o login ou index
-    window.location.href = "login.html";
-}

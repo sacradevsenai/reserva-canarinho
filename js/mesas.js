@@ -2,17 +2,18 @@
 // Responsável por: dados de mesas e jogos, lógica de reserva e caução
 // Implementação completa na quarta.
 
+
 // ─── Dados iniciais (mock) ───────────────────────────────────────────────────
 const mesas = [
-    { id: 1,  numero: 1,  capacidade: 4, categoria: "comum", status: "livre" },
-    { id: 2,  numero: 2,  capacidade: 4, categoria: "comum", status: "livre" },
-    { id: 3,  numero: 3,  capacidade: 6, categoria: "comum", status: "livre" },
-    { id: 4,  numero: 4,  capacidade: 6, categoria: "comum", status: "livre" },
-    { id: 5,  numero: 5,  capacidade: 4, categoria: "comum", status: "livre" },
-    { id: 6,  numero: 6,  capacidade: 4, categoria: "comum", status: "livre" },
-    { id: 7,  numero: 7,  capacidade: 8, categoria: "vip",   status: "livre" },
-    { id: 8,  numero: 8,  capacidade: 8, categoria: "vip",   status: "livre" },
-    { id: 9,  numero: 9,  capacidade: 4, categoria: "comum", status: "livre" },
+    { id: 1, numero: 1, capacidade: 4, categoria: "comum", status: "livre" },
+    { id: 2, numero: 2, capacidade: 4, categoria: "comum", status: "livre" },
+    { id: 3, numero: 3, capacidade: 6, categoria: "comum", status: "livre" },
+    { id: 4, numero: 4, capacidade: 6, categoria: "comum", status: "livre" },
+    { id: 5, numero: 5, capacidade: 4, categoria: "comum", status: "livre" },
+    { id: 6, numero: 6, capacidade: 4, categoria: "comum", status: "livre" },
+    { id: 7, numero: 7, capacidade: 8, categoria: "vip", status: "livre" },
+    { id: 8, numero: 8, capacidade: 8, categoria: "vip", status: "livre" },
+    { id: 9, numero: 9, capacidade: 4, categoria: "comum", status: "livre" },
     { id: 10, numero: 10, capacidade: 4, categoria: "comum", status: "livre" },
     { id: 11, numero: 11, capacidade: 6, categoria: "comum", status: "livre" },
     { id: 12, numero: 12, capacidade: 6, categoria: "comum", status: "livre" },
@@ -20,14 +21,14 @@ const mesas = [
 
 const jogos = [
     { id: 1, descricao: "Brasil x Argentina", dataHora: "2026-06-20T18:00", tipo: "brasil" },
-    { id: 2, descricao: "Brasil x França",    dataHora: "2026-06-24T15:00", tipo: "brasil" },
-    { id: 3, descricao: "Final da Copa",      dataHora: "2026-06-28T20:00", tipo: "final"  },
+    { id: 2, descricao: "Brasil x França", dataHora: "2026-06-24T15:00", tipo: "brasil" },
+    { id: 3, descricao: "Final da Copa", dataHora: "2026-06-28T20:00", tipo: "final" },
 ];
 
 // ─── Cálculo de caução (RN03) ────────────────────────────────────────────────
 function calcularCaucao(jogo, mesa, numeroPessoas) {
-    const valorBase  = jogo.tipo === "final" ? 30 : 20;
-    const fatorVip   = mesa.categoria === "vip" ? 0.5 : 0;
+    const valorBase = jogo.tipo === "final" ? 30 : 20;
+    const fatorVip = mesa.categoria === "vip" ? 0.5 : 0;
     return valorBase * numeroPessoas * (1 + fatorVip);
 }
 
@@ -68,12 +69,12 @@ function abrirModal(mesa) {
         `${mesa.capacidade} pessoas · ${mesa.categoria === "vip" ? "VIP" : "Comum"}`;
 
     // Reseta campos
-    document.getElementById("select-jogo").value    = "";
-    document.getElementById("input-pessoas").value  = "";
-    document.getElementById("input-pessoas").max    = mesa.capacidade;
+    document.getElementById("select-jogo").value = "";
+    document.getElementById("input-pessoas").value = "";
+    document.getElementById("input-pessoas").max = mesa.capacidade;
     document.getElementById("aviso-capacidade").textContent = "";
-    document.getElementById("modal-caucao").style.display   = "none";
-    document.getElementById("btn-reservar").disabled        = true;
+    document.getElementById("modal-caucao").style.display = "none";
+    document.getElementById("btn-reservar").disabled = true;
 
     // Exibe o modal
     document.getElementById("modal-overlay").style.display = "flex";
@@ -85,55 +86,60 @@ function fecharModal() {
 }
 
 function atualizarCaucao() {
-    const jogoId   = parseInt(document.getElementById("select-jogo").value);
-    const pessoas  = parseInt(document.getElementById("input-pessoas").value);
-    const aviso    = document.getElementById("aviso-capacidade");
-    const btnRes   = document.getElementById("btn-reservar");
+    const jogoId = parseInt(document.getElementById("select-jogo").value);
+    const pessoas = parseInt(document.getElementById("input-pessoas").value);
+    const aviso = document.getElementById("aviso-capacidade");
+    const btnRes = document.getElementById("btn-reservar");
     const divCaucao = document.getElementById("modal-caucao");
 
     // Valida campos
     if (!jogoId || !pessoas || pessoas < 1) {
-        divCaucao.style.display  = "none";
-        btnRes.disabled          = true;
+        divCaucao.style.display = "none";
+        btnRes.disabled = true;
         return;
     }
 
     // Valida capacidade da mesa
     if (pessoas > mesaSelecionada.capacidade) {
-        aviso.textContent       = `Capacidade máxima: ${mesaSelecionada.capacidade} pessoas.`;
+        aviso.textContent = `Capacidade máxima: ${mesaSelecionada.capacidade} pessoas.`;
         divCaucao.style.display = "none";
-        btnRes.disabled         = true;
+        btnRes.disabled = true;
         return;
     }
 
     aviso.textContent = "";
 
     // Calcula e exibe caução (RN03)
-    const jogo  = jogos.find(j => j.id === jogoId);
+    const jogo = jogos.find(j => j.id === jogoId);
     const valor = calcularCaucao(jogo, mesaSelecionada, pessoas);
 
     document.getElementById("caucao-valor").textContent =
         `R$ ${valor.toFixed(2).replace(".", ",")}`;
     divCaucao.style.display = "flex";
-    btnRes.disabled         = false;
+    btnRes.disabled = false;
 }
 
 function confirmarReserva() {
-    const jogoId  = parseInt(document.getElementById("select-jogo").value);
+    const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+    if (!usuario) {
+        window.location.href = "login.html";
+    }
+
+    const jogoId = parseInt(document.getElementById("select-jogo").value);
     const pessoas = parseInt(document.getElementById("input-pessoas").value);
-    const jogo    = jogos.find(j => j.id === jogoId);
-    const valor   = calcularCaucao(jogo, mesaSelecionada, pessoas);
+    const jogo = jogos.find(j => j.id === jogoId);
+    const valor = calcularCaucao(jogo, mesaSelecionada, pessoas);
 
     // Monta objeto de reserva e salva no localStorage (RF11, RF12, RF16)
     const reserva = {
-        id:            Date.now().toString(),
-        mesaId:        mesaSelecionada.id,
-        jogoId:        jogoId,
+        id: Date.now().toString(),
+        mesaId: mesaSelecionada.id,
+        jogoId: jogoId,
         numeroPessoas: pessoas,
-        dataCriacao:   new Date().toISOString(),
-        status:        "pendente", // pendente até confirmação em pagamento.html
+        dataCriacao: new Date().toISOString(),
+        status: "pendente", // pendente até confirmação em pagamento.html
         caucao: {
-            valor:  valor,
+            valor: valor,
             status: "pendente"
         },
         codigoCheckin: null // gerado em pagamento.html após confirmação
@@ -142,7 +148,7 @@ function confirmarReserva() {
     // Salva reserva pendente
     const reservas = JSON.parse(localStorage.getItem("reservas")) || [];
     reservas.push(reserva);
-    localStorage.setItem("reservas",    JSON.stringify(reservas));
+    localStorage.setItem("reservas", JSON.stringify(reservas));
     localStorage.setItem("reservaAtual", JSON.stringify(reserva));
 
     // Altera status da mesa para reservada
@@ -174,7 +180,7 @@ document.getElementById("btn-reservar")
 // ─── Listeners do grid de mesas ──────────────────────────────────────────────
 document.querySelectorAll(".area-das-mesas button").forEach(btn => {
     btn.addEventListener("click", function () {
-        const id     = parseInt(this.dataset.id);
+        const id = parseInt(this.dataset.id);
         const status = this.dataset.status || "livre";
 
         // Só abre modal em mesas livres

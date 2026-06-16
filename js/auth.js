@@ -56,6 +56,35 @@ function carregarPerfilCliente(usuario) {
     document.getElementById("perfil-telefone").textContent = usuario.telefone || "—";
 
     // Verifica reserva ativa
+    const reservaAtual = JSON.parse(localStorage.getItem("reservaAtual"));
+
+    const blocoReserva = document.getElementById("reserva-ativa");
+    const blocoSemReserva = document.getElementById("sem-reserva");
+
+    if (reservaAtual && reservaAtual.status === "confirmada") {
+        blocoReserva.style.display = "block"; // mostra a reseva
+        blocoSemReserva.style.display = "none";
+
+        const elMesa = document.getElementById("reserva-mesa"); // pega as inforamções da reserva
+        const elJogo = document.getElementById("reserva-jogo");
+        const elPessoas = document.getElementById("reserva-pessoas");
+        const elStatus = document.getElementById("reserva-status");
+        const elCodigo = document.getElementById("reserva-codigo");
+        
+        const mesa = mesas.find(m => m.id === reservaAtual.mesaId);
+        const jogo = jogos.find(j => j.id === reservaAtual.jogoId);
+
+        elMesa.textContent = mesa ? `Mesa ${mesa.numero} (${mesa.categoria})` : `Mesa ${reservaAtual.mesaId}`;
+        elJogo.textContent = jogo ? jogo.descricao : `Jogo ${reservaAtual.jogoId}`;
+        elPessoas.textContent = String(reservaAtual.numeroPessoas);
+        elStatus.textContent = String(reservaAtual.status);
+        elCodigo.textContent = String(reservaAtual.codigoCheckin)
+
+    } else {
+        blocoReserva.style.display = "none";
+        blocoSemReserva.style.display = "block"; // mostra que não há reserva
+    }
+
     // TODO (quarta): implementar com mesas.js
 }
 
@@ -153,7 +182,7 @@ if (formularioLogin) {
 
             // Verifica se o e-mail e a senha da posição 'i' batem com o que foi digitado na tela
             if (listaUsuarios[i].email === emailDigitado && listaUsuarios[i].senha === senhaDigitada) {
-                usuarioEncontrado = listaUsuarios[i]; 
+                usuarioEncontrado = listaUsuarios[i];
                 break; // Interrompe o laço imediatamente. Não precisa continuar procurando
             }
         }

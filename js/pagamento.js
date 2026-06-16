@@ -61,7 +61,7 @@ btnVoltar.addEventListener("click", function (e) {
 
 const btnConfirmar = document.getElementById("btn-confirmar-pagamento");
 
-btnConfirmar.addEventListener("click", function (e)){
+btnConfirmar.addEventListener("click", function (e){
     e.preventDefault();
 
     const reservaAtual = JSON.parse(localStorage.getItem("reservaAtual"));
@@ -97,4 +97,4 @@ btnConfirmar.addEventListener("click", function (e)){
     localStorage.setItem("reservaAtual", JSON.stringify(reservas[idx]));
 
     window.location.href = "users.html";
-}
+});

@@ -5,14 +5,14 @@
 
 // ─── Dados iniciais (mock) ───────────────────────────────────────────────────
 const mesas = [
-    { id: 1, numero: 1, capacidade: 4, categoria: "comum", status: "livre" },
-    { id: 2, numero: 2, capacidade: 4, categoria: "comum", status: "livre" },
-    { id: 3, numero: 3, capacidade: 6, categoria: "comum", status: "livre" },
-    { id: 4, numero: 4, capacidade: 6, categoria: "comum", status: "livre" },
+    { id: 1, numero: 1, capacidade: 4, categoria: "vip", status: "livre" },
+    { id: 2, numero: 2, capacidade: 4, categoria: "vip", status: "livre" },
+    { id: 3, numero: 3, capacidade: 6, categoria: "vip", status: "livre" },
+    { id: 4, numero: 4, capacidade: 6, categoria: "vip", status: "livre" },
     { id: 5, numero: 5, capacidade: 4, categoria: "comum", status: "livre" },
     { id: 6, numero: 6, capacidade: 4, categoria: "comum", status: "livre" },
-    { id: 7, numero: 7, capacidade: 8, categoria: "vip", status: "livre" },
-    { id: 8, numero: 8, capacidade: 8, categoria: "vip", status: "livre" },
+    { id: 7, numero: 7, capacidade: 8, categoria: "comum", status: "livre" },
+    { id: 8, numero: 8, capacidade: 8, categoria: "comum", status: "livre" },
     { id: 9, numero: 9, capacidade: 4, categoria: "comum", status: "livre" },
     { id: 10, numero: 10, capacidade: 4, categoria: "comum", status: "livre" },
     { id: 11, numero: 11, capacidade: 6, categoria: "comum", status: "livre" },
@@ -122,7 +122,9 @@ function atualizarCaucao() {
 function confirmarReserva() {
     const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
     if (!usuario) {
+        alert("Faça login para confirmar a reserva.");
         window.location.href = "login.html";
+        return;
     }
 
     const jogoId = parseInt(document.getElementById("select-jogo").value);

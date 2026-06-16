@@ -1,0 +1,284 @@
+/* =========================================
+   ReservaCanarinho - Estilo base (style.css)
+   Tema: Verde/Amarelo (Copa) - aplicável a
+   todas as páginas do sistema.
+   ========================================= */
+
+:root {
+    --verde-principal: #0B5D3B;
+    --verde-escuro: #06372A;
+    --amarelo-destaque: #F4C542;
+    --branco-gelo: #FAFAF5;
+    --cinza-texto: #3A3A3A;
+    --cinza-claro: #E5E5E0;
+
+    --fonte-titulo: 'Poppins', sans-serif;
+    --fonte-corpo: 'Inter', sans-serif;
+}
+
+
+/* 2. Aplica a animação no corpo de TODAS as páginas */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--fonte-corpo);
+    color: var(--cinza-texto);
+    background-color: var(--branco-gelo);
+    line-height: 1.6;
+
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+
+}
+
+main {
+    flex: 1;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* =========================
+   CABEÇALHO
+   ========================= */
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 16px 32px;
+    background-color: var(--branco-gelo);
+    border-bottom: 3px solid var(--verde-principal);
+}
+
+header .logo img {
+    height: 56px;
+}
+
+header nav ul {
+    display: flex;
+    list-style: none;
+    gap: 24px;
+}
+
+header nav a {
+    font-family: var(--fonte-titulo);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--verde-escuro);
+    padding: 8px 4px;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+header nav a:hover,
+header nav a.ativo {
+    color: var(--verde-principal);
+    border-bottom-color: var(--amarelo-destaque);
+}
+
+/* =========================
+   HERO / BANNER
+   ========================= */
+
+.hero {
+    text-align: center;
+    padding: 64px 24px;
+    background-color: var(--verde-principal);
+    color: var(--branco-gelo);
+}
+
+.hero h1 {
+    font-family: var(--fonte-titulo);
+    font-weight: 700;
+    font-size: 2.5rem;
+    margin-bottom: 8px;
+}
+
+.hero .slogan {
+    font-family: var(--fonte-titulo);
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--amarelo-destaque);
+    margin-bottom: 16px;
+}
+
+.hero .hero-texto {
+    max-width: 600px;
+    margin: 0 auto 24px;
+    font-size: 1rem;
+}
+
+.btn-destaque {
+    display: inline-block;
+    background-color: var(--amarelo-destaque);
+    color: var(--verde-escuro);
+    font-family: var(--fonte-titulo);
+    font-weight: 700;
+    padding: 14px 32px;
+    border-radius: 6px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-destaque:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+
+/* =========================
+   SEÇÕES GERAIS
+   ========================= */
+
+main section {
+    padding: 56px 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+main section h2 {
+    font-family: var(--fonte-titulo);
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: var(--verde-escuro);
+    text-align: center;
+    margin-bottom: 36px;
+}
+
+/* =========================
+   COMO FUNCIONA
+   ========================= */
+
+.passos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+}
+
+.passo {
+    background-color: #ffffff;
+    border: 1px solid var(--cinza-claro);
+    border-radius: 8px;
+    padding: 24px;
+    text-align: center;
+    position: relative;
+}
+
+.passo-numero {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--amarelo-destaque);
+    color: var(--verde-escuro);
+    font-family: var(--fonte-titulo);
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.passo h3 {
+    font-family: var(--fonte-titulo);
+    font-size: 1.1rem;
+    color: var(--verde-principal);
+    margin-bottom: 8px;
+}
+
+.passo p {
+    font-size: 0.95rem;
+}
+
+/* =========================
+   SOBRE
+   ========================= */
+
+.sobre p {
+    max-width: 750px;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 1rem;
+}
+
+/* =========================
+   DIFERENCIAIS
+   ========================= */
+
+.lista-diferenciais {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+}
+
+.diferencial {
+    border-left: 4px solid var(--amarelo-destaque);
+    padding: 8px 16px;
+}
+
+.diferencial h3 {
+    font-family: var(--fonte-titulo);
+    font-size: 1.05rem;
+    color: var(--verde-escuro);
+    margin-bottom: 6px;
+}
+
+.diferencial p {
+    font-size: 0.95rem;
+}
+
+/* =========================
+   RODAPÉ
+   ========================= */
+
+footer {
+    background-color: var(--verde-escuro);
+    color: var(--branco-gelo);
+    padding: 32px 24px;
+    text-align: center;
+}
+
+footer .logo-footer img {
+    height: 48px;
+    margin: 0 auto 12px;
+    filter: brightness(0) invert(1);
+}
+
+footer .contato p {
+    font-size: 0.85rem;
+    color: var(--cinza-claro);
+}
+
+/* =========================
+   RESPONSIVO
+   ========================= */
+
+@media (max-width: 600px) {
+    header {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+    }
+
+    header nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .hero h1 {
+        font-size: 2rem;
+    }
+}

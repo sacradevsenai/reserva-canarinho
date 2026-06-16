@@ -1,0 +1,142 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--verde-escuro);
+    border-radius: 4px;
+    box-sizing: border-box;
+    max-width: 500px;
+    color: var(--branco-gelo);
+
+    min-height: 300px;
+    max-width: 400px;
+    width: 100%;
+    padding: 40px 30px;
+}
+
+.main-login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    width: 100%;
+    flex: 1;
+}
+
+.conteudo-principal {
+    height: 500px;
+}
+
+.main-login .conteudo-principal {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 20px;
+}
+
+legend {
+    font-family: var(--fonte-titulo);
+    font-size: 1.8rem;
+    /* Tamanho imponente e moderno */
+    font-weight: 700;
+    /* Negrito marcante */
+    color: var(--branco-gelo);
+    text-align: center;
+    /* Centraliza o título no card */
+    width: 100%;
+    /* Força o elemento a ocupar toda a largura para o alinhamento funcionar */
+    margin-bottom: 1.5rem;
+    /* Espaço sutil entre o título e o primeiro input */
+    letter-spacing: -0.5px;
+    /* Deixa o título ligeiramente mais compacto e moderno */
+}
+
+input {
+    width: 100%;
+    padding: 14px 16px;
+    /* Espaço interno confortável para o texto respirar */
+    font-family: var(--fonte-corpo);
+    font-size: 1rem;
+    color: var(--cinza-texto);
+    background-color: var(--branco-gelo);
+    border: 2px solid transparent;
+    /* Evita que a caixa mude de tamanho no foco */
+    border-radius: 6px;
+    /* Cantos arredondados suavizados */
+    outline: none;
+    /* Remove a linha preta padrão do navegador */
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    /* Efeito suave ao clicar */
+}
+
+input::placeholder {
+    color: #9A9A95;
+    /* Um tom de cinza que combina com a paleta */
+    font-weight: 400;
+}
+
+input:focus {
+    border-color: var(--amarelo-destaque);
+    /* Borda com o amarelo do Canarinho */
+    box-shadow: 0 0 8px rgba(244, 197, 66, 0.4);
+    /* Brilho suave ao redor */
+}
+
+.btn-enviar {
+    width: 100%;
+    padding: 14px;
+    margin-top: 10px;
+    /* Separa um pouco do input de senha */
+    background-color: var(--amarelo-destaque);
+    color: var(--verde-escuro);
+    font-family: var(--fonte-titulo);
+    font-weight: 700;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.1s ease, background-color 0.2s ease;
+}
+
+.btn-enviar:hover {
+    background-color: #e5b533;
+    /* Tom ligeiramente mais escuro no hover */
+    transform: translateY(-1px);
+}
+
+.btn-enviar:active {
+    transform: translateY(1px);
+    /* Efeito físico de clique */
+}
+
+.login-group {
+    position: relative;
+    display: inline-block;
+}
+
+#senha {
+    padding-right: 30px;
+}
+
+#olhoSenha {
+   position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-family: 'Material Symbols Outlined' !important;
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    color: var(--cinza-texto);
+}

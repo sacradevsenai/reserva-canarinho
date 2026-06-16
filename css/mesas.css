@@ -1,0 +1,427 @@
+/* =========================================
+   mesas.css
+   Estilos da página de mesas
+   ========================================= */
+
+/* =========================
+   LAYOUT GERAL
+   ========================= */
+
+.main-mesas {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 24px;
+    gap: 32px;
+    min-height: calc(100vh - 180px);
+}
+
+/* =========================
+   FILTROS / ABAS DE STATUS
+   ========================= */
+
+.status {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    background-color: #EDECEA;
+    border-radius: 10px;
+    padding: 6px;
+    width: fit-content;
+}
+
+/* Reset do button global — só vale dentro de .status */
+.status button {
+    border-radius: 7px;
+    padding: 8px 24px;
+    border: none;
+    background-color: transparent;
+    font-family: var(--fonte-titulo);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #777770;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.status button:hover {
+    background-color: rgba(255, 255, 255, 0.6);
+    color: var(--cinza-texto);
+}
+
+/* Aba ativa — aplicada via JS com .aba-ativa */
+.status button.aba-ativa {
+    background-color: #ffffff;
+    color: var(--verde-principal);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+}
+
+/* =========================
+   LEGENDA DE CORES
+   ========================= */
+
+.legenda {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.legenda-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    color: #666;
+}
+
+.legenda-cor {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+}
+
+.legenda-cor.livre     { background-color: #d4edda; border: 1px solid #b8dac4; }
+.legenda-cor.reservada { background-color: #fff3cd; border: 1px solid #f0dfa0; }
+.legenda-cor.ocupada   { background-color: #f8d7da; border: 1px solid #e8b8bb; }
+.legenda-cor.vip       { background-color: var(--verde-principal); border: 1px solid var(--verde-escuro); }
+
+/* =========================
+   GRID DE MESAS
+   ========================= */
+
+.area-das-mesas {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    width: 100%;
+    max-width: 900px;
+}
+
+/* Card base de mesa (substitui o button genérico) */
+.area-das-mesas button {
+    border: 2px solid #DDDDD8;
+    border-radius: 10px;
+    padding: 0;
+    background-color: #ffffff;
+    cursor: pointer;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-family: var(--fonte-corpo);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--cinza-texto);
+    transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+    position: relative;
+}
+
+.area-das-mesas button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Número da mesa em destaque */
+.area-das-mesas button .mesa-numero {
+    font-family: var(--fonte-titulo);
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+/* Capacidade abaixo do nome */
+.area-das-mesas button .mesa-cap {
+    font-size: 0.75rem;
+    color: #999;
+}
+
+/* =========================
+   ESTADOS DE MESA (via JS)
+   ========================= */
+
+.area-das-mesas button.livre {
+    background-color: #d4edda;
+    border-color: #b8dac4;
+    color: #155724;
+}
+
+.area-das-mesas button.reservada {
+    background-color: #fff3cd;
+    border-color: #f0dfa0;
+    color: #856404;
+    cursor: not-allowed;
+}
+
+.area-das-mesas button.ocupada {
+    background-color: #f8d7da;
+    border-color: #e8b8bb;
+    color: #721c24;
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+/* =========================
+   ZONA VIP
+   ========================= */
+
+.area-das-mesas button.vip-zone {
+    border-color: var(--verde-principal);
+}
+
+.area-das-mesas button.vip-zone::after {
+    content: "VIP";
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: var(--verde-principal);
+    color: var(--branco-gelo);
+    font-family: var(--fonte-titulo);
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+}
+
+.area-das-mesas button.vip-zone.livre {
+    background-color: #e8f5ee;
+    border-color: var(--verde-principal);
+    color: var(--verde-escuro);
+}
+
+/* Mesa oculta pelo filtro (via JS) */
+.area-das-mesas button.oculta {
+    display: none;
+}
+
+/* =========================
+   RESPONSIVO
+   ========================= */
+
+@media (max-width: 700px) {
+    .area-das-mesas {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .area-das-mesas {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .status {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .status button {
+        padding: 8px 12px;
+        font-size: 0.8rem;
+    }
+}
+
+/* =========================
+   MODAL DE RESERVA
+   ========================= */
+
+/* Overlay escurecido por trás do modal */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(6, 55, 42, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 24px;
+    backdrop-filter: blur(2px);
+}
+
+/* Caixa do modal */
+.modal-reserva {
+    background-color: #ffffff;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 460px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+}
+
+/* Cabeçalho: título + botão fechar */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.modal-titulo {
+    font-family: var(--fonte-titulo);
+    font-size: 1.3rem;
+    color: var(--verde-escuro);
+    margin-bottom: 4px;
+}
+
+.modal-subtitulo {
+    font-size: 0.85rem;
+    color: #888;
+}
+
+.modal-fechar {
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    color: #aaa;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: color 0.15s, background-color 0.15s;
+    line-height: 1;
+}
+
+.modal-fechar:hover {
+    color: var(--cinza-texto);
+    background-color: #f0f0ec;
+}
+
+/* Campos do formulário */
+.modal-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.modal-campo label {
+    font-family: var(--fonte-titulo);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--verde-escuro);
+}
+
+.modal-campo select,
+.modal-campo input {
+    width: 100%;
+    padding: 12px 14px;
+    font-family: var(--fonte-corpo);
+    font-size: 0.95rem;
+    color: var(--cinza-texto);
+    background-color: var(--branco-gelo);
+    border: 2px solid #DDDDD8;
+    border-radius: 6px;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    appearance: none;
+}
+
+.modal-campo select:focus,
+.modal-campo input:focus {
+    border-color: var(--amarelo-destaque);
+    box-shadow: 0 0 8px rgba(244, 197, 66, 0.35);
+}
+
+/* Aviso de capacidade excedida */
+.modal-aviso {
+    font-size: 0.8rem;
+    color: #c0392b;
+    min-height: 16px;
+}
+
+/* Bloco de caução calculada */
+.modal-caucao {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    background-color: var(--branco-gelo);
+    border: 1px solid var(--cinza-claro);
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+}
+
+.caucao-label {
+    font-size: 0.8rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.caucao-valor {
+    font-family: var(--fonte-titulo);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--verde-principal);
+}
+
+.caucao-info {
+    font-size: 0.78rem;
+    color: #aaa;
+}
+
+/* Botões de ação */
+.modal-acoes {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-cancelar-modal {
+    flex: 1;
+    padding: 12px;
+    background-color: transparent;
+    color: #888;
+    border: 1.5px solid #DDDDD8;
+    border-radius: 6px;
+    font-family: var(--fonte-titulo);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+}
+
+.btn-cancelar-modal:hover {
+    border-color: var(--cinza-texto);
+    color: var(--cinza-texto);
+}
+
+.btn-reservar {
+    flex: 2;
+    padding: 12px;
+    background-color: var(--verde-principal);
+    color: var(--branco-gelo);
+    border: none;
+    border-radius: 6px;
+    font-family: var(--fonte-titulo);
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.15s, transform 0.1s;
+}
+
+.btn-reservar:hover:not(:disabled) {
+    background-color: var(--verde-escuro);
+    transform: translateY(-1px);
+}
+
+/* Botão desabilitado enquanto campos incompletos */
+.btn-reservar:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    transform: none;
+}
+
+@media (max-width: 480px) {
+    .modal-reserva {
+        padding: 24px 20px;
+    }
+
+    .modal-acoes {
+        flex-direction: column;
+    }
+}

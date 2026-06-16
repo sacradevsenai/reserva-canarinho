@@ -1,0 +1,134 @@
+/* =========================================
+   pagamento-style.css
+   Estilos da página de pagamento simulado
+   ========================================= */
+
+.main-pagamento {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 48px 24px;
+    min-height: calc(100vh - 180px);
+}
+
+.conteudo-pagamento {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    width: 100%;
+    max-width: 860px;
+}
+
+/* Card genérico compartilhado entre resumo e pagamento */
+.card-resumo,
+.card-pagamento {
+    background-color: #ffffff;
+    border: 1px solid var(--cinza-claro);
+    border-radius: 10px;
+    padding: 32px;
+}
+
+.card-resumo h2,
+.card-pagamento h2 {
+    font-family: var(--fonte-titulo);
+    font-size: 1.2rem;
+    color: var(--verde-escuro);
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--amarelo-destaque);
+}
+
+/* Linhas do resumo */
+.resumo-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--cinza-claro);
+}
+
+.resumo-item:last-child {
+    border-bottom: none;
+}
+
+.resumo-label {
+    font-size: 0.9rem;
+    color: #777770;
+}
+
+.resumo-valor {
+    font-weight: 500;
+    color: var(--cinza-texto);
+}
+
+.resumo-total .resumo-label,
+.resumo-total .resumo-valor {
+    font-family: var(--fonte-titulo);
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--verde-principal);
+}
+
+/* Card pagamento */
+.pagamento-info {
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 24px;
+}
+
+.pagamento-metodo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background-color: var(--branco-gelo);
+    border: 1px solid var(--cinza-claro);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 24px;
+    font-size: 0.9rem;
+    color: var(--cinza-texto);
+}
+
+.pagamento-icone {
+    font-size: 1.4rem;
+}
+
+.btn-confirmar {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--verde-principal);
+    color: var(--branco-gelo);
+    font-family: var(--fonte-titulo);
+    font-weight: 700;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.1s ease, background-color 0.2s ease;
+    margin-bottom: 12px;
+}
+
+.btn-confirmar:hover {
+    background-color: var(--verde-escuro);
+    transform: translateY(-1px);
+}
+
+.link-cancelar {
+    display: block;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #999;
+    text-decoration: underline;
+}
+
+.link-cancelar:hover {
+    color: var(--cinza-texto);
+}
+
+/* Responsivo */
+@media (max-width: 680px) {
+    .conteudo-pagamento {
+        grid-template-columns: 1fr;
+    }
+}

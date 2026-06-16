@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReservaCanarinho - Mesas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/mesas.css">
+<meta name="view-transition" content="same-origin"></head>
+
+
+<body>
+    <div class="container-principal">
+
+        <!-- CABEÇALHO -->
+        <header>
+            <div class="logo">
+                <img src="./img/logo.svg" alt="Logomarca ReservaCanarinho">
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="mesas.html" class="ativo">Mesas</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="cadastro.html">Cadastro</a></li>
+                    <li><a href="checkin.html">Check-in</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="main-mesas">
+
+            <!-- ABAS DE FILTRO -->
+            <section class="status">
+                <button id="todos"     class="aba-ativa">Todos</button>
+                <button id="livre"                      >Livre</button>
+                <button id="reservado"                  >Reservado</button>
+                <button id="ocupado"                    >Ocupada</button>
+            </section>
+
+            <!-- LEGENDA -->
+            <div class="legenda">
+                <div class="legenda-item">
+                    <span class="legenda-cor livre"></span> Livre
+                </div>
+                <div class="legenda-item">
+                    <span class="legenda-cor reservada"></span> Reservada
+                </div>
+                <div class="legenda-item">
+                    <span class="legenda-cor ocupada"></span> Ocupada
+                </div>
+                <div class="legenda-item">
+                    <span class="legenda-cor vip"></span> VIP
+                </div>
+            </div>
+
+            <!-- GRID DE MESAS -->
+            <!-- data-status: controlado via JS (livre / reservada / ocupada)  -->
+            <!-- data-cap: capacidade de pessoas, exibida no card              -->
+            <section class="area-das-mesas">
+                <button class="vip-zone livre"    data-id="1"  data-status="livre"    data-cap="4">
+                    <span class="mesa-numero">Mesa 1</span>
+                    <span class="mesa-cap">4 pessoas</span>
+                </button>
+                <button class="vip-zone livre"    data-id="2"  data-status="livre"    data-cap="4">
+                    <span class="mesa-numero">Mesa 2</span>
+                    <span class="mesa-cap">4 pessoas</span>
+                </button>
+                <button class="vip-zone livre"    data-id="3"  data-status="livre"    data-cap="6">
+                    <span class="mesa-numero">Mesa 3</span>
+                    <span class="mesa-cap">6 pessoas</span>
+                </button>
+                <button class="vip-zone livre"    data-id="4"  data-status="livre"    data-cap="6">
+                    <span class="mesa-numero">Mesa 4</span>
+                    <span class="mesa-cap">6 pessoas</span>
+                </button>
+                <button class="commun-zone livre" data-id="5"  data-status="livre"    data-cap="4">
+                    <span class="mesa-numero">Mesa 5</span>
+                    <span class="mesa-cap">4 pessoas</span>
+                </button>
+                <button class="commun-zone livre" data-id="6"  data-status="livre"    data-cap="4">
+                    <span class="mesa-numero">Mesa 6</span>
+                    <span class="mesa-cap">4 pessoas</span>
+                </button>
+                <button class="commun-zone livre" data-id="7"  data-status="livre"    data-cap="8">
+                    <span class="mesa-numero">Mesa 7</span>
+                    <span class="mesa-cap">8 pessoas</span>
+                </button>
+                <button class="commun-zone livre" data-id="8"  data-status="livre"    data-cap="8">
+                    <span class="mesa-numero">Mesa 8</span>
+                    <span class="mesa-cap">8 pessoas</span>
+                </button>
+                <button class="commun-zone livre" data-id="9"  data-status="livre"    data-cap="4">
+                    <span class="mesa-numero">Mesa 9</span>
+                    <span class="mesa-cap">4 pessoas</span>
+                </button>
+                <button class="commun-zone livre" data-id="10" data-status="livre"    data-cap="4">
+                    <span class="mesa-numero">Mesa 10</span>
+                    <span class="mesa-cap">4 pessoas</span>
+                </button>
+                <button class="commun-zone livre" data-id="11" data-status="livre"    data-cap="6">
+                    <span class="mesa-numero">Mesa 11</span>
+                    <span class="mesa-cap">6 pessoas</span>
+                </button>
+                <button class="commun-zone livre" data-id="12" data-status="livre"    data-cap="6">
+                    <span class="mesa-numero">Mesa 12</span>
+                    <span class="mesa-cap">6 pessoas</span>
+                </button>
+            </section>
+
+        </main>
+
+        <!-- RODAPÉ -->
+        <footer>
+            <div class="logo-footer">
+                <img src="./img/logo.svg" alt="Logomarca ReservaCanarinho">
+            </div>
+            <div class="contato">
+                <p>Contato: contato@reservacanarinho.com</p>
+                <p>&copy; 2026 ReservaCanarinho. Todos os direitos reservados.</p>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- MODAL DE RESERVA -->
+    <!-- Aberto via JS quando o usuário clica numa mesa livre -->
+    <div class="modal-overlay" id="modal-overlay" style="display: none;">
+        <div class="modal-reserva" id="modal-reserva">
+
+            <!-- Cabeçalho do modal -->
+            <div class="modal-header">
+                <div>
+                    <h2 class="modal-titulo" id="modal-titulo">Mesa 1</h2>
+                    <span class="modal-subtitulo" id="modal-subtitulo">4 pessoas · Comum</span>
+                </div>
+                <button class="modal-fechar" id="modal-fechar" aria-label="Fechar">✕</button>
+            </div>
+
+            <!-- Seleção de jogo (RF09) -->
+            <div class="modal-campo">
+                <label for="select-jogo">Jogo</label>
+                <select id="select-jogo">
+                    <option value="" disabled selected>Selecione um jogo</option>
+                    <option value="1">Brasil x Argentina — 20/06 às 18h</option>
+                    <option value="2">Brasil x França — 24/06 às 15h</option>
+                    <option value="3">Final da Copa — 28/06 às 20h</option>
+                </select>
+            </div>
+
+            <!-- Número de ocupantes (RF10) -->
+            <div class="modal-campo">
+                <label for="input-pessoas">Número de pessoas</label>
+                <input
+                    type="number"
+                    id="input-pessoas"
+                    min="1"
+                    placeholder="Quantas pessoas?"
+                >
+                <span class="modal-aviso" id="aviso-capacidade"></span>
+            </div>
+
+            <!-- Valor da caução calculado dinamicamente (RF14) -->
+            <div class="modal-caucao" id="modal-caucao" style="display: none;">
+                <span class="caucao-label">Valor da caução</span>
+                <span class="caucao-valor" id="caucao-valor">R$ 0,00</span>
+                <span class="caucao-info">Retido em caso de não comparecimento</span>
+            </div>
+
+            <!-- Ações -->
+            <div class="modal-acoes">
+                <button class="btn-cancelar-modal" id="btn-cancelar-modal">Cancelar</button>
+                <button class="btn-reservar" id="btn-reservar" disabled>Confirmar reserva</button>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="./js/script.js"></script>
+    <script src="./js/mesas.js"></script>
+</body>
+
+</html>

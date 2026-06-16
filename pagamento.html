@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReservaCanarinho - Pagamento</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/pagamento-style.css">
+<meta name="view-transition" content="same-origin"></head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <img src="img/logo.svg" alt="Logomarca ReservaCanarinho">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Início</a></li>
+                <li><a href="mesas.html">Mesas</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="checkin.html">Check-in</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main-pagamento">
+        <section class="conteudo-pagamento">
+
+            <!-- Resumo da reserva -->
+            <div class="card-resumo">
+                <h2>Resumo da Reserva</h2>
+
+                <div class="resumo-item">
+                    <span class="resumo-label">Mesa</span>
+                    <span class="resumo-valor" id="resumo-mesa">—</span>
+                </div>
+                <div class="resumo-item">
+                    <span class="resumo-label">Jogo</span>
+                    <span class="resumo-valor" id="resumo-jogo">—</span>
+                </div>
+                <div class="resumo-item">
+                    <span class="resumo-label">Pessoas</span>
+                    <span class="resumo-valor" id="resumo-pessoas">—</span>
+                </div>
+                <div class="resumo-item resumo-total">
+                    <span class="resumo-label">Caução</span>
+                    <span class="resumo-valor" id="resumo-caucao">R$ —</span>
+                </div>
+            </div>
+
+            <!-- Confirmação de pagamento simulado -->
+            <div class="card-pagamento">
+                <h2>Confirmar Pagamento</h2>
+                <p class="pagamento-info">
+                    Ao confirmar, sua reserva será garantida. O valor da caução será retido
+                    em caso de não comparecimento no dia do jogo.
+                </p>
+
+                <div class="pagamento-metodo">
+                    <span class="pagamento-icone">💳</span>
+                    <span>Pagamento simulado (sem cobrança real)</span>
+                </div>
+
+                <button class="btn-confirmar" id="btn-confirmar-pagamento">
+                    Confirmar pagamento
+                </button>
+
+                <a href="mesas.html" class="link-cancelar">Cancelar reserva</a>
+            </div>
+
+        </section>
+    </main>
+
+    <footer>
+        <div class="logo-footer">
+            <img src="img/logo.svg" alt="Logomarca ReservaCanarinho">
+        </div>
+        <div class="contato">
+            <p>Contato: contato@reservacanarinho.com</p>
+            <p>&copy; 2026 ReservaCanarinho. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/mesas.js"></script>
+</body>
+</html>

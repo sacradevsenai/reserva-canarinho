@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReservaCanarinho - Minha Conta</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/users-style.css">
+<meta name="view-transition" content="same-origin"></head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <img src="img/logo.svg" alt="Logomarca ReservaCanarinho">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Início</a></li>
+                <li><a href="mesas.html">Mesas</a></li>
+                <li><a href="#" onclick="fazerLogout(); return false" id="btn-logout">Sair</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main-users">
+
+        <!-- =============================================
+             VISÃO CLIENTE
+             Exibida quando tipoUsuario === "cliente"
+             Controlada por auth.js via display: block/none
+             ============================================= -->
+        <section class="visao-cliente" id="visao-cliente" style="display: none;">
+
+            <!-- Card de perfil -->
+            <div class="perfil-card">
+                <!-- Avatar com iniciais (gerado via JS) -->
+                <div class="avatar" id="avatar-iniciais">?</div>
+
+                <div class="perfil-info">
+                    <h2 id="perfil-nome">Carregando...</h2>
+                    <p id="perfil-email" class="perfil-detalhe">—</p>
+                    <p id="perfil-telefone" class="perfil-detalhe">—</p>
+                </div>
+            </div>
+
+            <!-- Reserva ativa (aparece se houver reserva, via JS) -->
+            <div class="reserva-ativa" id="reserva-ativa" style="display: none;">
+                <h3>Sua reserva ativa</h3>
+
+                <div class="reserva-card">
+                    <div class="reserva-item">
+                        <span class="reserva-label">Mesa</span>
+                        <span class="reserva-valor" id="reserva-mesa">—</span>
+                    </div>
+                    <div class="reserva-item">
+                        <span class="reserva-label">Jogo</span>
+                        <span class="reserva-valor" id="reserva-jogo">—</span>
+                    </div>
+                    <div class="reserva-item">
+                        <span class="reserva-label">Pessoas</span>
+                        <span class="reserva-valor" id="reserva-pessoas">—</span>
+                    </div>
+                    <div class="reserva-item">
+                        <span class="reserva-label">Status</span>
+                        <span class="reserva-valor reserva-status" id="reserva-status">—</span>
+                    </div>
+                    <div class="reserva-item">
+                        <span class="reserva-label">Código de check-in</span>
+                        <span class="reserva-valor reserva-codigo" id="reserva-codigo">—</span>
+                    </div>
+                </div>
+
+                <a href="checkin.html" class="btn-destaque">Fazer check-in</a>
+            </div>
+
+            <!-- Sem reserva ativa (aparece se não houver reserva, via JS) -->
+            <div class="sem-reserva" id="sem-reserva" style="display: none;">
+                <p>Você não tem nenhuma reserva ativa no momento.</p>
+                <a href="mesas.html" class="btn-destaque">Reservar uma mesa</a>
+            </div>
+
+        </section>
+
+        <!-- =============================================
+             VISÃO ADMIN
+             Exibida quando tipoUsuario === "admin"
+             Controlada por auth.js via display: block/none
+             ============================================= -->
+        <section class="visao-admin" id="visao-admin" style="display: none;">
+
+            <h2 class="admin-titulo">Painel Operacional</h2>
+
+            <!-- Cards de métricas rápidas -->
+            <div class="metricas">
+                <div class="metrica-card">
+                    <span class="metrica-numero" id="total-livres">0</span>
+                    <span class="metrica-label">Mesas livres</span>
+                </div>
+                <div class="metrica-card">
+                    <span class="metrica-numero" id="total-reservadas">0</span>
+                    <span class="metrica-label">Reservadas</span>
+                </div>
+                <div class="metrica-card">
+                    <span class="metrica-numero" id="total-ocupadas">0</span>
+                    <span class="metrica-label">Ocupadas</span>
+                </div>
+                <div class="metrica-card metrica-alerta">
+                    <span class="metrica-numero" id="total-noshow">0</span>
+                    <span class="metrica-label">No-shows hoje</span>
+                </div>
+            </div>
+
+            <!-- Mapa de mesas resumido -->
+            <div class="admin-secao">
+                <h3>Status das Mesas</h3>
+                <div class="mapa-admin" id="mapa-admin">
+                    <!-- Gerado via JS: div.mesa-mini por mesa -->
+                </div>
+            </div>
+
+            <!-- Lista de check-ins do dia -->
+            <div class="admin-secao">
+                <h3>Check-ins do Dia</h3>
+                <table class="tabela-admin" id="tabela-checkins">
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Mesa</th>
+                            <th>Jogo</th>
+                            <th>Horário check-in</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="corpo-checkins">
+                        <!-- Preenchido via JS -->
+                        <tr>
+                            <td colspan="5" class="tabela-vazia">Nenhum check-in registrado ainda.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Fila de espera -->
+            <div class="admin-secao">
+                <h3>Fila de Espera</h3>
+                <div class="fila-espera" id="fila-espera">
+                    <p class="tabela-vazia">Nenhum cliente na fila de espera.</p>
+                    <!-- Preenchido via JS se houver fila -->
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="logo-footer">
+            <img src="img/logo.svg" alt="Logomarca ReservaCanarinho">
+        </div>
+        <div class="contato">
+            <p>Contato: contato@reservacanarinho.com</p>
+            <p>&copy; 2026 ReservaCanarinho. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="./js/script.js"></script>
+    <script src="./js/auth.js"></script>
+    <script src="./js/mesas.js"></script>
+    <script src="./js/checkin.js"></script>
+</body>
+</html>

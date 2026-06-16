@@ -47,6 +47,7 @@
     font-family: var(--fonte-titulo);
     font-size: 1.4rem;
     margin-bottom: 4px;
+    color: var(--branco-gelo);
 }
 
 .perfil-detalhe {

@@ -76,8 +76,9 @@
                         <span class="reserva-valor reserva-codigo" id="reserva-codigo">—</span>
                     </div>
                 </div>
-
-                <a href="checkin.html" class="btn-destaque">Fazer check-in</a>
+                <p class="qr-instrucao">Apresente este QR Code ao garçom para o check-in:</p>
+                <div id="qr-area"></div>
+                <a href="#" class="btn-destaque" id="btn-cancelar-reserva">Cancelar reserva</a>
             </div>
 
             <!-- Sem reserva ativa (aparece se não houver reserva, via JS) -->
@@ -172,6 +173,7 @@
 
     <script src="./js/mesas.js"></script>
     <script src="./js/auth.js"></script>
+    <script src="./js/lib/qrcode.min.js"></script>
 </body>
 
 </html>

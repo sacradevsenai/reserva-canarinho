@@ -5,12 +5,54 @@
 // ─── Constante de domínio admin ─────────────────────────────────────────────
 const DOMINIO_ADMIN = "reservacanarinho.com";
 
+// ORGANIZAÇÃO DO NAVBAR
+
+function lerUsuarioLogado() {
+    try {
+        return JSON.parse(localStorage.getItem("usuarioLogado"));
+    } catch {
+        return null;
+    }
+}
+
+function setVisivelNav(idLink, visivel) {
+    const link = document.getElementById(idLink);
+    if (!link) return;
+
+    // esconde o <li> inteiro (melhor que esconder só o <a>)
+    const item = link.closest("li") || link;
+    item.style.display = visivel ? "" : "none";
+}
+
+function atualizarNavbar() {
+    const usuario = lerUsuarioLogado();
+    const logado = !!usuario;
+    const admin = logado && usuario.tipo === "admin";
+
+    setVisivelNav("nav-login", !logado);
+    setVisivelNav("nav-cadastro", !logado);
+
+    setVisivelNav("nav-perfil", logado);
+    setVisivelNav("btn-logout", logado);
+
+    setVisivelNav("nav-checkin", admin); // só admin vê
+}
+
 // ─── Verifica se usuário está logado (chamado por todas as páginas protegidas) ─
 function verificarSessao() {
-    const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
-    if (!usuario) {
-        window.location.href = "login.html";
+    let usuario = null;
+
+    try {
+        usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+    } catch {
+        usuario = null;
     }
+
+    if (!usuario) {
+        window.location.replace("login.html"); // melhor que href para evitar “voltar” e cair no guard de novo
+        return null;
+    }
+
     return usuario;
 }
 
@@ -70,23 +112,70 @@ function carregarPerfilCliente(usuario) {
         const elPessoas = document.getElementById("reserva-pessoas");
         const elStatus = document.getElementById("reserva-status");
         const elCodigo = document.getElementById("reserva-codigo");
-        
+
         const mesa = mesas.find(m => m.id === reservaAtual.mesaId);
         const jogo = jogos.find(j => j.id === reservaAtual.jogoId);
 
-        elMesa.textContent = mesa ? `Mesa ${mesa.numero} (${mesa.categoria})` : `Mesa ${reservaAtual.mesaId}`;
+        elMesa.textContent = mesa ? `Mesa ${mesa.numero} (${mesa.categoria === "vip" ? "VIP" : "Comum"})` : `Mesa ${reservaAtual.mesaId}`;
         elJogo.textContent = jogo ? jogo.descricao : `Jogo ${reservaAtual.jogoId}`;
         elPessoas.textContent = String(reservaAtual.numeroPessoas);
         elStatus.textContent = String(reservaAtual.status);
-        elCodigo.textContent = String(reservaAtual.codigoCheckin)
+        elCodigo.textContent = String(reservaAtual.codigoCheckin);
+
+        // construção do qrcode 
+
+        const qrArea = document.getElementById("qr-area");
+        if (qrArea) {
+            qrArea.innerHTML = "";
+            new QRCode(qrArea, {
+                text: reservaAtual.checkinUrl,
+                width: 160,
+                height: 160
+            });
+        }
+
+        // Botão para cancelar reserva em user
+
+        const btnCancelar = document.getElementById('btn-cancelar-reserva');
+
+        btnCancelar.onclick = function (e) {
+            e.preventDefault();
+
+            const ok = confirm('Deseja cancelar sua reserva? Isso liberará a mesa.');
+            if (!ok) return;
+
+            if (!reservaAtual) return;
+
+            // liberando a mesa
+
+            alterarStatusMesa(reservaAtual.mesaId, 'livre');
+
+            // removendo a reserva
+            const reservas = JSON.parse(localStorage.getItem("reservas")) || [];
+            const reservasAtualizadas = reservas.filter(r => r.id !== reservaAtual.id);
+
+            localStorage.setItem("reservas", JSON.stringify(reservasAtualizadas));
+
+            // apaga a reserva atual
+
+            localStorage.removeItem('reservaAtual');
+
+            // Atualiza a tela
+
+            blocoReserva.style.display = 'none';
+            blocoSemReserva.style.display = 'block';
+
+        };
 
     } else {
         blocoReserva.style.display = "none";
         blocoSemReserva.style.display = "block"; // mostra que não há reserva
     }
 
+
     // TODO (quarta): implementar com mesas.js
 }
+
 
 // ─── Carrega dados do painel admin ──────────────────────────────────────────
 function carregarDadosAdmin() {
@@ -148,10 +237,6 @@ if (formularioCadastro) {
     });
 }
 
-// Só roda a proteção de tela se NÃO for a página de login e NÃO for a página de cadastro
-if (!document.getElementById("form-login") && !document.getElementById("form-cadastro")) {
-    exibirVisao();
-}
 
 // Captura o formulário de login do HTML usando o ID dele
 const formularioLogin = document.getElementById("form-login");
@@ -200,4 +285,36 @@ if (formularioLogin) {
             alert("E-mail ou senha incorretos. Tente novamente.");
         }
     });
+}
+
+// 1) Navbar sempre (páginas públicas também)
+// 1) Navbar sempre
+atualizarNavbar();
+
+// 2) Proteção só quando o HTML pedir
+const paginaProtegida = document.body.dataset.protegida === "true";
+const adminOnly = document.body.dataset.adminOnly === "true";
+
+let usuarioSessao = lerUsuarioLogado();
+let bloqueouNavegacao = false;
+
+if (paginaProtegida) {
+    usuarioSessao = verificarSessao(); // pode redirecionar
+
+    if (!usuarioSessao) {
+        bloqueouNavegacao = true; // não executa mais nada nesta carga
+    } else if (adminOnly && usuarioSessao.tipo !== "admin") {
+        window.location.replace("users.html");
+        bloqueouNavegacao = true;
+    }
+}
+
+// 3) Só monta visão users se não bloqueou
+if (!bloqueouNavegacao) {
+    const temVisaoUsers =
+        document.getElementById("visao-cliente") || document.getElementById("visao-admin");
+
+    if (temVisaoUsers) {
+        exibirVisao();
+    }
 }

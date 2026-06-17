@@ -221,5 +221,22 @@ document.querySelectorAll(".status button").forEach(btn => {
     });
 });
 
+function aplicarStatusNoGrid() {
+    const botoes = document.querySelectorAll(".area-das-mesas button");
+
+    botoes.forEach(btn => {
+        const id = parseInt(btn.dataset.id, 10);
+        const mesa = mesas.find(m => m.id === id);
+        if (!mesa) return;
+
+        // atualiza o que seus filtros/cliques leem
+        btn.dataset.status = mesa.status;
+
+        // atualiza a classe visual (mantém vip-zone/commun-zone)
+        btn.classList.remove("livre", "reservada", "ocupada");
+        btn.classList.add(mesa.status);
+    });
+}
+
 // ─── Inicializa ──────────────────────────────────────────────────────────────
 carregarMesas();

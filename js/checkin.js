@@ -2,6 +2,17 @@
 // Responsável por: validação de código de check-in e cancelamento automático
 // Implementação completa na quarta.
 
+// pré-preencher o campo do checkin
+
+// ─── Pré-preenche o código se vier pela URL (?codigo=XXXXXX) ───────────────
+const inputCodigo = document.getElementById("codigo-checkin");
+const params = new URLSearchParams(window.location.search);
+const codigoUrl = params.get("codigo");
+
+if (inputCodigo && codigoUrl) {
+    inputCodigo.value = codigoUrl.trim();
+}
+
 // ─── Validação de check-in ───────────────────────────────────────────────────
 function validarCheckin(codigo) {
     const reservas = JSON.parse(localStorage.getItem("reservas")) || [];
@@ -21,8 +32,8 @@ function validarCheckin(codigo) {
     }
 
     // Atualiza status da reserva e da mesa
-    reserva.status          = "checkin";
-    reserva.horarioCheckin  = new Date().toISOString();
+    reserva.status = "checkin";
+    reserva.horarioCheckin = new Date().toISOString();
     alterarStatusMesa(reserva.mesaId, "ocupada");
     localStorage.setItem("reservas", JSON.stringify(reservas));
 
@@ -53,7 +64,11 @@ function rotinaCancelamentoAutomatico() {
 
     if (houveCancelamento) {
         localStorage.setItem("reservas", JSON.stringify(reservas));
+
+        if (typeof aplicarStatusNoGrid === "function") aplicarStatusNoGrid();
+
     }
+    console.log("rodou rotina")
 }
 
 // ─── Inicia a rotina automática ao carregar qualquer página com este script ──
@@ -65,15 +80,15 @@ rotinaCancelamentoAutomatico(); // executa imediatamente ao carregar
 const btnCheckin = document.getElementById("btn-fazer-checkin");
 if (btnCheckin) {
     btnCheckin.addEventListener("click", function () {
-        const codigo   = document.getElementById("codigo-checkin").value.trim().toUpperCase();
+        const codigo = document.getElementById("codigo-checkin").value.trim().toUpperCase();
         const feedback = document.getElementById("checkin-feedback");
         const mensagem = document.getElementById("checkin-mensagem");
 
         const resultado = validarCheckin(codigo);
 
         feedback.style.display = "block";
-        feedback.className     = "checkin-feedback " + (resultado.sucesso ? "sucesso" : "erro");
-        mensagem.textContent   = resultado.sucesso
+        feedback.className = "checkin-feedback " + (resultado.sucesso ? "sucesso" : "erro");
+        mensagem.textContent = resultado.sucesso
             ? "Check-in realizado com sucesso!"
             : resultado.mensagem;
 

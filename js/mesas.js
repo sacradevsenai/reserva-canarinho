@@ -240,3 +240,4 @@ function aplicarStatusNoGrid() {
 
 // ─── Inicializa ──────────────────────────────────────────────────────────────
 carregarMesas();
+aplicarStatusNoGrid();

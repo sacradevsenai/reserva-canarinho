@@ -124,7 +124,8 @@ header nav a.ativo {
 }
 
 .btn-destaque {
-    display: inline-block;
+    display: flex;
+    justify-content: center;
     background-color: var(--amarelo-destaque);
     color: var(--verde-escuro);
     font-family: var(--fonte-titulo);

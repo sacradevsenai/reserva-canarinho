@@ -108,6 +108,12 @@
     font-size: 0.85rem;
 }
 
+#qr-area {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+}
+
 /* Cores de status aplicadas via JS */
 .status-confirmada { background-color: #d4edda; color: #155724; }
 .status-pendente   { background-color: #fff3cd; color: #856404; }

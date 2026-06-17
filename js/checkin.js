@@ -1,8 +1,5 @@
 // checkin.js
 // Responsável por: validação de código de check-in e cancelamento automático
-// Implementação completa na quarta.
-
-// pré-preencher o campo do checkin
 
 // ─── Pré-preenche o código se vier pela URL (?codigo=XXXXXX) ───────────────
 const inputCodigo = document.getElementById("codigo-checkin");

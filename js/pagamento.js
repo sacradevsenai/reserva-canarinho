@@ -14,8 +14,6 @@ if (!reservaAtual) {
     window.location.href = "mesas.html";
 }
 
-// preenchendo o card resumo
-
 
 //formatação de moeda
 function formatarBRL(valor) {

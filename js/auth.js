@@ -170,16 +170,56 @@ function carregarPerfilCliente(usuario) {
     } else {
         blocoReserva.style.display = "none";
         blocoSemReserva.style.display = "block"; // mostra que não há reserva
+
+        const msg = document.getElementById("msg-sem-reserva");
+        if (msg) {
+            if (reservaAtual && reservaAtual.status === "cancelada-noshow") {
+                msg.textContent = "Sua reserva foi cancelada por no-show (fora do prazo). A caução foi retida.";
+            } else {
+                msg.textContent = "Você não tem nenhuma reserva ativa no momento.";
+            }
+        }
     }
 
-
-    // TODO (quarta): implementar com mesas.js
 }
 
 
 // ─── Carrega dados do painel admin ──────────────────────────────────────────
 function carregarDadosAdmin() {
-    // TODO (quarta): puxar mesas e reservas do localStorage e popular métricas/tabela
+
+    // ---- MÉTRICAS ----
+    const elLivres = document.getElementById("total-livres");
+    const elReservadas = document.getElementById("total-reservadas");
+    const elOcupadas = document.getElementById("total-ocupadas");
+    const elNoShow = document.getElementById("total-noshow");
+
+    const totalLivres = mesas.filter(m => m.status === "livre").length;
+    const totalReservadas = mesas.filter(m => m.status === "reservada").length;
+    const totalOcupadas = mesas.filter(m => m.status === "ocupada").length;
+
+    const reservas = JSON.parse(localStorage.getItem("reservas")) || [];
+    const totalNoShow = reservas.filter(r => r.status === "cancelada-noshow").length;
+
+    if (elLivres) elLivres.textContent = String(totalLivres);
+    if (elReservadas) elReservadas.textContent = String(totalReservadas);
+    if (elOcupadas) elOcupadas.textContent = String(totalOcupadas);
+    if (elNoShow) elNoShow.textContent = String(totalNoShow);
+
+    // ---- MINI MAPA ----
+    const mapa = document.getElementById("mapa-admin");
+    if (!mapa) return;
+
+    mapa.innerHTML = "";
+
+    mesas.forEach(mesa => {
+        const item = document.createElement("div");
+        item.classList.add("mesa-mini", mesa.status);
+        if (mesa.categoria === "vip") item.classList.add("vip");
+
+        item.textContent = String(mesa.numero);
+        mapa.appendChild(item);
+    });
+
 }
 
 // ─── Logout ──────────────────────────────────────────────────────────────────

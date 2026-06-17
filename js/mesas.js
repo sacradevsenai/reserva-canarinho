@@ -1,7 +1,5 @@
 // mesas.js
 // Responsável por: dados de mesas e jogos, lógica de reserva e caução
-// Implementação completa na quarta.
-
 
 // ─── Dados iniciais (mock) ───────────────────────────────────────────────────
 const mesas = [
@@ -20,7 +18,7 @@ const mesas = [
 ];
 
 const jogos = [
-    { id: 1, descricao: "Brasil x Argentina", dataHora: "2026-06-20T18:00", tipo: "brasil" },
+    { id: 1, descricao: "Brasil x Argentina", dataHora: "2026-06-20T18:30", tipo: "brasil" },
     { id: 2, descricao: "Brasil x França", dataHora: "2026-06-24T15:00", tipo: "brasil" },
     { id: 3, descricao: "Final da Copa", dataHora: "2026-06-28T20:00", tipo: "final" },
 ];

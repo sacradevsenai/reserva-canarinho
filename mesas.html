@@ -12,7 +12,8 @@
 
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/mesas.css">
-<meta name="view-transition" content="same-origin"></head>
+    <meta name="view-transition" content="same-origin">
+</head>
 
 
 <body>
@@ -25,11 +26,17 @@
             </div>
             <nav>
                 <ul>
-                    <li><a href="index.html">Início</a></li>
-                    <li><a href="mesas.html" class="ativo">Mesas</a></li>
-                    <li><a href="login.html">Login</a></li>
-                    <li><a href="cadastro.html">Cadastro</a></li>
-                    <li><a href="checkin.html">Check-in</a></li>
+                    <li><a id="nav-inicio" href="index.html">Início</a></li>
+                    <li><a id="nav-mesas" href="mesas.html" class="ativo">Mesas</a></li>
+
+                    <!-- Itens de usuário logado (o JS vai mostrar/ocultar) -->
+                    <li><a id="nav-perfil" href="users.html">Perfil</a></li>
+                    <li><a id="nav-checkin" href="checkin.html">Check-in</a></li>
+                    <li><a id="btn-logout" href="#">Sair</a></li>
+
+                    <!-- Itens de usuário deslogado (o JS vai mostrar/ocultar) -->
+                    <li><a id="nav-login" href="login.html">Login</a></li>
+                    <li><a id="nav-cadastro" href="cadastro.html">Cadastro</a></li>
                 </ul>
             </nav>
         </header>
@@ -38,10 +45,10 @@
 
             <!-- ABAS DE FILTRO -->
             <section class="status">
-                <button id="todos"     class="aba-ativa">Todos</button>
-                <button id="livre"                      >Livre</button>
-                <button id="reservado"                  >Reservado</button>
-                <button id="ocupado"                    >Ocupada</button>
+                <button id="todos" class="aba-ativa">Todos</button>
+                <button id="livre">Livre</button>
+                <button id="reservado">Reservado</button>
+                <button id="ocupado">Ocupada</button>
             </section>
 
             <!-- LEGENDA -->
@@ -64,51 +71,51 @@
             <!-- data-status: controlado via JS (livre / reservada / ocupada)  -->
             <!-- data-cap: capacidade de pessoas, exibida no card              -->
             <section class="area-das-mesas">
-                <button class="vip-zone livre"    data-id="1"  data-status="livre"    data-cap="4">
+                <button class="vip-zone livre" data-id="1" data-status="livre" data-cap="4">
                     <span class="mesa-numero">Mesa 1</span>
                     <span class="mesa-cap">4 pessoas</span>
                 </button>
-                <button class="vip-zone livre"    data-id="2"  data-status="livre"    data-cap="4">
+                <button class="vip-zone livre" data-id="2" data-status="livre" data-cap="4">
                     <span class="mesa-numero">Mesa 2</span>
                     <span class="mesa-cap">4 pessoas</span>
                 </button>
-                <button class="vip-zone livre"    data-id="3"  data-status="livre"    data-cap="6">
+                <button class="vip-zone livre" data-id="3" data-status="livre" data-cap="6">
                     <span class="mesa-numero">Mesa 3</span>
                     <span class="mesa-cap">6 pessoas</span>
                 </button>
-                <button class="vip-zone livre"    data-id="4"  data-status="livre"    data-cap="6">
+                <button class="vip-zone livre" data-id="4" data-status="livre" data-cap="6">
                     <span class="mesa-numero">Mesa 4</span>
                     <span class="mesa-cap">6 pessoas</span>
                 </button>
-                <button class="commun-zone livre" data-id="5"  data-status="livre"    data-cap="4">
+                <button class="commun-zone livre" data-id="5" data-status="livre" data-cap="4">
                     <span class="mesa-numero">Mesa 5</span>
                     <span class="mesa-cap">4 pessoas</span>
                 </button>
-                <button class="commun-zone livre" data-id="6"  data-status="livre"    data-cap="4">
+                <button class="commun-zone livre" data-id="6" data-status="livre" data-cap="4">
                     <span class="mesa-numero">Mesa 6</span>
                     <span class="mesa-cap">4 pessoas</span>
                 </button>
-                <button class="commun-zone livre" data-id="7"  data-status="livre"    data-cap="8">
+                <button class="commun-zone livre" data-id="7" data-status="livre" data-cap="8">
                     <span class="mesa-numero">Mesa 7</span>
                     <span class="mesa-cap">8 pessoas</span>
                 </button>
-                <button class="commun-zone livre" data-id="8"  data-status="livre"    data-cap="8">
+                <button class="commun-zone livre" data-id="8" data-status="livre" data-cap="8">
                     <span class="mesa-numero">Mesa 8</span>
                     <span class="mesa-cap">8 pessoas</span>
                 </button>
-                <button class="commun-zone livre" data-id="9"  data-status="livre"    data-cap="4">
+                <button class="commun-zone livre" data-id="9" data-status="livre" data-cap="4">
                     <span class="mesa-numero">Mesa 9</span>
                     <span class="mesa-cap">4 pessoas</span>
                 </button>
-                <button class="commun-zone livre" data-id="10" data-status="livre"    data-cap="4">
+                <button class="commun-zone livre" data-id="10" data-status="livre" data-cap="4">
                     <span class="mesa-numero">Mesa 10</span>
                     <span class="mesa-cap">4 pessoas</span>
                 </button>
-                <button class="commun-zone livre" data-id="11" data-status="livre"    data-cap="6">
+                <button class="commun-zone livre" data-id="11" data-status="livre" data-cap="6">
                     <span class="mesa-numero">Mesa 11</span>
                     <span class="mesa-cap">6 pessoas</span>
                 </button>
-                <button class="commun-zone livre" data-id="12" data-status="livre"    data-cap="6">
+                <button class="commun-zone livre" data-id="12" data-status="livre" data-cap="6">
                     <span class="mesa-numero">Mesa 12</span>
                     <span class="mesa-cap">6 pessoas</span>
                 </button>
@@ -157,12 +164,7 @@
             <!-- Número de ocupantes (RF10) -->
             <div class="modal-campo">
                 <label for="input-pessoas">Número de pessoas</label>
-                <input
-                    type="number"
-                    id="input-pessoas"
-                    min="1"
-                    placeholder="Quantas pessoas?"
-                >
+                <input type="number" id="input-pessoas" min="1" placeholder="Quantas pessoas?">
                 <span class="modal-aviso" id="aviso-capacidade"></span>
             </div>
 
@@ -182,7 +184,6 @@
         </div>
     </div>
 
-    <script src="./js/script.js"></script>
     <script src="./js/mesas.js"></script>
 </body>
 

@@ -10,7 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="./css/style.css">
-<meta name="view-transition" content="same-origin"></head>
+    <meta name="view-transition" content="same-origin">
+</head>
 
 
 <body>
@@ -23,10 +24,17 @@
 
             <nav>
                 <ul>
-                    <li><a href="index.html" class="ativo">Início</a></li>
-                    <li><a href="mesas.html">Mesas</a></li>
-                    <li><a href="login.html">Login</a></li>
-                    <li><a href="cadastro.html">Cadastro</a></li>
+                    <li><a id="nav-inicio" href="index.html" class="ativo">Início</a></li>
+                    <li><a id="nav-mesas" href="mesas.html">Mesas</a></li>
+
+                    <!-- Itens de usuário logado (o JS vai mostrar/ocultar) -->
+                    <li><a id="nav-perfil" href="users.html">Perfil</a></li>
+                    <li><a id="nav-checkin" href="checkin.html">Check-in</a></li>
+                    <li><a id="btn-logout" href="#">Sair</a></li>
+
+                    <!-- Itens de usuário deslogado (o JS vai mostrar/ocultar) -->
+                    <li><a id="nav-login" href="login.html">Login</a></li>
+                    <li><a id="nav-cadastro" href="cadastro.html">Cadastro</a></li>
                 </ul>
             </nav>
         </header>

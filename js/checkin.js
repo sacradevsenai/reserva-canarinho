@@ -34,7 +34,20 @@ function validarCheckin(codigo) {
     alterarStatusMesa(reserva.mesaId, "ocupada");
     localStorage.setItem("reservas", JSON.stringify(reservas));
 
+    // Sincroniza reservaAtual (para o perfil do cliente refletir o check-in)
+    const rawReservaAtual = localStorage.getItem("reservaAtual");
+    if (rawReservaAtual) {
+        const reservaAtual = JSON.parse(rawReservaAtual);
+
+        // Atualiza somente se for a mesma reserva
+        if (reservaAtual.id === reserva.id) {
+            localStorage.setItem("reservaAtual", JSON.stringify(reserva));
+        }
+    }
+
     return { sucesso: true, reserva };
+
+
 }
 
 // ─── Cancelamento automático (RN02 / RF13) ───────────────────────────────────

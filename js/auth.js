@@ -102,6 +102,8 @@ function carregarPerfilCliente(usuario) {
 
     const blocoReserva = document.getElementById("reserva-ativa");
     const blocoSemReserva = document.getElementById("sem-reserva");
+    const blocoCheckin = document.getElementById("checkin-realizado");
+
 
     if (reservaAtual && reservaAtual.status === "confirmada") {
         blocoReserva.style.display = "block"; // mostra a reseva
@@ -167,9 +169,32 @@ function carregarPerfilCliente(usuario) {
 
         };
 
-    } else {
+    } else if (reservaAtual && reservaAtual.status === "checkin") {
+        // Check-in: esconde QR/cancelar e mostra card de check-in realizado
         blocoReserva.style.display = "none";
-        blocoSemReserva.style.display = "block"; // mostra que não há reserva
+        blocoSemReserva.style.display = "none";
+        if (blocoCheckin) blocoCheckin.style.display = "block";
+
+        const mesa = mesas.find(m => m.id === reservaAtual.mesaId);
+        const jogo = jogos.find(j => j.id === reservaAtual.jogoId);
+
+        const elMesa = document.getElementById("checkin-mesa");
+        const elJogo = document.getElementById("checkin-jogo");
+        const elHorario = document.getElementById("checkin-horario");
+
+        if (elMesa) elMesa.textContent = mesa ? `Mesa ${mesa.numero}` : `Mesa ${reservaAtual.mesaId}`;
+        if (elJogo) elJogo.textContent = jogo ? jogo.descricao : `Jogo ${reservaAtual.jogoId}`;
+        if (elHorario) {
+            elHorario.textContent = reservaAtual.horarioCheckin
+                ? new Date(reservaAtual.horarioCheckin).toLocaleString("pt-BR")
+                : "—";
+        }
+
+    } else {
+        // Sem reserva ativa: mostra mensagens (no-show/expirada/etc.)
+        blocoReserva.style.display = "none";
+        if (blocoCheckin) blocoCheckin.style.display = "none";
+        blocoSemReserva.style.display = "block";
 
         const msg = document.getElementById("msg-sem-reserva");
         if (msg) {

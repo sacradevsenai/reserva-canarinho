@@ -18,9 +18,10 @@ const mesas = [
 ];
 
 const jogos = [
-    { id: 1, descricao: "Brasil x Argentina", dataHora: "2026-06-18T18:30", tipo: "brasil" },
+    { id: 1, descricao: "Brasil x Argentina", dataHora: "2026-06-20T18:30", tipo: "brasil" },
     { id: 2, descricao: "Brasil x França", dataHora: "2026-06-24T15:00", tipo: "brasil" },
     { id: 3, descricao: "Final da Copa", dataHora: "2026-06-28T20:00", tipo: "final" },
+
 ];
 
 // ─── ORGANIZAÇÃO DOS JOGOS ───────────────────────────────────────────────────
@@ -87,18 +88,10 @@ function renderPainelJogos() {
     }
 
     proximos.forEach(j => {
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "proximo-jogo";
-        btn.textContent = `${j.descricao} — ${new Date(j.dataHora).toLocaleString("pt-BR")}`;
-
-        // opcional (legal pra demo): clicar muda o jogo ativo manualmente
-        btn.onclick = () => {
-            setJogoAtivo(j.id);
-            renderPainelJogos();
-        };
-
-        listaDiv.appendChild(btn);
+        const item = document.createElement("div");
+        item.className = "proximo-jogo";
+        item.textContent = `${j.descricao} — ${new Date(j.dataHora).toLocaleString("pt-BR")}`;
+        listaDiv.appendChild(item);
     });
 }
 

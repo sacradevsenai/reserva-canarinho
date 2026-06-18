@@ -89,6 +89,28 @@
                 <a href="#" class="btn-destaque" id="btn-cancelar-reserva">Cancelar reserva</a>
             </div>
 
+            <!-- Check-in realizado (aparece se status === "checkin") -->
+            <div class="reserva-ativa" id="checkin-realizado" style="display: none;">
+                <h3>Check-in realizado com sucesso</h3>
+
+                <div class="reserva-card">
+                    <div class="reserva-item">
+                        <span class="reserva-label">Mesa</span>
+                        <span class="reserva-valor" id="checkin-mesa">—</span>
+                    </div>
+                    <div class="reserva-item">
+                        <span class="reserva-label">Jogo</span>
+                        <span class="reserva-valor" id="checkin-jogo">—</span>
+                    </div>
+                    <div class="reserva-item">
+                        <span class="reserva-label">Horário</span>
+                        <span class="reserva-valor" id="checkin-horario">—</span>
+                    </div>
+                </div>
+
+                <p style="margin-top:12px; display:flex; justify-content: center; align-items:center;">Aproveite! Sua mesa já está em uso.</p>
+            </div>
+
             <!-- Sem reserva ativa (aparece se não houver reserva, via JS) -->
             <div class="sem-reserva" id="sem-reserva" style="display: none;">
                 <p id="msg-sem-reserva">Você não tem nenhuma reserva ativa no momento.</p>

@@ -63,6 +63,9 @@
     font-size: 1.1rem;
     color: var(--verde-escuro);
     margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .reserva-card {
@@ -71,6 +74,7 @@
     border-radius: 10px;
     padding: 24px;
     margin-bottom: 20px;
+    
 }
 
 .reserva-item {
@@ -115,9 +119,20 @@
 }
 
 /* Cores de status aplicadas via JS */
-.status-confirmada { background-color: #d4edda; color: #155724; }
-.status-pendente   { background-color: #fff3cd; color: #856404; }
-.status-cancelada  { background-color: #f8d7da; color: #721c24; }
+.status-confirmada {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-pendente {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-cancelada {
+    background-color: #f8d7da;
+    color: #721c24;
+}
 
 .sem-reserva {
     display: flex;
@@ -203,9 +218,23 @@
     border: 1px solid transparent;
 }
 
-.mesa-mini.livre      { background-color: #d4edda; color: #155724; border-color: #c3e6cb; }
-.mesa-mini.reservada  { background-color: #fff3cd; color: #856404; border-color: #ffeeba; }
-.mesa-mini.ocupada    { background-color: #f8d7da; color: #721c24; border-color: #f5c6cb; }
+.mesa-mini.livre {
+    background-color: #d4edda;
+    color: #155724;
+    border-color: #c3e6cb;
+}
+
+.mesa-mini.reservada {
+    background-color: #fff3cd;
+    color: #856404;
+    border-color: #ffeeba;
+}
+
+.mesa-mini.ocupada {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-color: #f5c6cb;
+}
 
 /* Tabela de check-ins */
 .tabela-admin {

@@ -175,6 +175,8 @@ function carregarPerfilCliente(usuario) {
         if (msg) {
             if (reservaAtual && reservaAtual.status === "cancelada-noshow") {
                 msg.textContent = "Sua reserva foi cancelada por no-show (fora do prazo). A caução foi retida.";
+            } else if (reservaAtual && reservaAtual.status === "cancelada-expirada") {
+                msg.textContent = "Sua reserva expirou por falta de pagamento (10 minutos). A mesa foi liberada.";
             } else {
                 msg.textContent = "Você não tem nenhuma reserva ativa no momento.";
             }

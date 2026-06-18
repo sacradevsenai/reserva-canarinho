@@ -43,17 +43,39 @@ function rotinaCancelamentoAutomatico() {
     const reservas = JSON.parse(localStorage.getItem("reservas")) || [];
     let houveCancelamento = false;
 
+    const agoraMs = Date.now();
+    const LIMITE_PAGAMENTO_MS = 10 * 60 * 1000; // 10 minutos
+
     reservas.forEach(reserva => {
+
+        // --- (A) EXPIRAÇÃO DE PAGAMENTO: reserva pendente por +10min ---
+        if (reserva.status === "pendente") {
+            const criadoMs = new Date(reserva.dataCriacao).getTime();
+
+            if (agoraMs > criadoMs + LIMITE_PAGAMENTO_MS) {
+                reserva.status = "cancelada-expirada";
+                // não pagou, então não retém caução; só marca como não paga
+                if (reserva.caucao) reserva.caucao.status = "nao-paga";
+
+                alterarStatusMesa(reserva.mesaId, "livre");
+                houveCancelamento = true;
+            }
+
+            return; // não precisa checar no-show se ainda era pendente
+        }
+
+        // --- (B) NO-SHOW: reserva confirmada e passou do prazo (30 min antes do jogo) ---
         if (reserva.status !== "confirmada") return;
 
         const jogo = jogos.find(j => j.id === reserva.jogoId);
         if (!jogo) return;
 
         const horarioLimite = new Date(new Date(jogo.dataHora).getTime() - 30 * 60 * 1000);
+
         if (new Date() > horarioLimite) {
             reserva.status = "cancelada-noshow";
-            // Retém caução (apenas marca — sem integração real)
             reserva.caucao.status = "retida";
+
             alterarStatusMesa(reserva.mesaId, "livre");
             houveCancelamento = true;
         }
@@ -61,59 +83,56 @@ function rotinaCancelamentoAutomatico() {
 
     if (houveCancelamento) {
         localStorage.setItem("reservas", JSON.stringify(reservas));
+
+        // Atualiza o mapa (se estiver na página de mesas)
         if (typeof aplicarStatusNoGrid === "function") aplicarStatusNoGrid();
 
+        // Sincroniza reservaAtual (para o users deixar de mostrar reserva ativa)
         const rawReservaAtual = localStorage.getItem("reservaAtual");
-
         if (rawReservaAtual) {
             const reservaAtual = JSON.parse(rawReservaAtual);
-
-            // Procura no array "reservas" a reserva com o mesmo id da reservaAtual
             const atualizada = reservas.find(r => r.id === reservaAtual.id);
 
             if (atualizada) {
-                // Salva a versão atualizada (agora ela pode estar cancelada-noshow/retida)
                 localStorage.setItem("reservaAtual", JSON.stringify(atualizada));
             } else {
-                // Se por algum motivo não existir mais, remove
                 localStorage.removeItem("reservaAtual");
             }
-
         }
     }
 }
 
-    // ─── Inicia a rotina automática ao carregar qualquer página com este script ──
-    // Intervalo em 30s (pode ser reduzido para demonstração)
-    setInterval(rotinaCancelamentoAutomatico, 30000);
-    rotinaCancelamentoAutomatico(); // executa imediatamente ao carregar
+// ─── Inicia a rotina automática ao carregar qualquer página com este script ──
+// Intervalo em 30s (pode ser reduzido para demonstração)
+setInterval(rotinaCancelamentoAutomatico, 10000);
+rotinaCancelamentoAutomatico(); // executa imediatamente ao carregar
 
-    // ─── Listener do botão de check-in (só ativo em checkin.html) ───────────────
-    const btnCheckin = document.getElementById("btn-fazer-checkin");
-    if (btnCheckin) {
-        btnCheckin.addEventListener("click", function () {
-            const codigo = document.getElementById("codigo-checkin").value.trim().toUpperCase();
-            const feedback = document.getElementById("checkin-feedback");
-            const mensagem = document.getElementById("checkin-mensagem");
+// ─── Listener do botão de check-in (só ativo em checkin.html) ───────────────
+const btnCheckin = document.getElementById("btn-fazer-checkin");
+if (btnCheckin) {
+    btnCheckin.addEventListener("click", function () {
+        const codigo = document.getElementById("codigo-checkin").value.trim().toUpperCase();
+        const feedback = document.getElementById("checkin-feedback");
+        const mensagem = document.getElementById("checkin-mensagem");
 
-            const resultado = validarCheckin(codigo);
+        const resultado = validarCheckin(codigo);
 
-            feedback.style.display = "block";
-            feedback.className = "checkin-feedback " + (resultado.sucesso ? "sucesso" : "erro");
-            mensagem.textContent = resultado.sucesso
-                ? "Check-in realizado com sucesso!"
-                : resultado.mensagem;
+        feedback.style.display = "block";
+        feedback.className = "checkin-feedback " + (resultado.sucesso ? "sucesso" : "erro");
+        mensagem.textContent = resultado.sucesso
+            ? "Check-in realizado com sucesso!"
+            : resultado.mensagem;
 
-            if (resultado.sucesso) {
-                // Exibe card de confirmação
-                const cardConfirmado = document.getElementById("card-confirmado");
-                if (cardConfirmado) {
-                    cardConfirmado.style.display = "block";
-                    const jogo = jogos.find(j => j.id === resultado.reserva.jogoId);
-                    document.getElementById("confirmado-mesa").textContent = `Mesa ${resultado.reserva.mesaId}`;
-                    document.getElementById("confirmado-jogo").textContent = jogo ? jogo.descricao : "—";
-                }
+        if (resultado.sucesso) {
+            // Exibe card de confirmação
+            const cardConfirmado = document.getElementById("card-confirmado");
+            if (cardConfirmado) {
+                cardConfirmado.style.display = "block";
+                const jogo = jogos.find(j => j.id === resultado.reserva.jogoId);
+                document.getElementById("confirmado-mesa").textContent = `Mesa ${resultado.reserva.mesaId}`;
+                document.getElementById("confirmado-jogo").textContent = jogo ? jogo.descricao : "—";
             }
-        });
-    }
-    
+        }
+    });
+}
+

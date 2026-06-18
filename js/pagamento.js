@@ -5,6 +5,8 @@ const elJogo = document.getElementById("resumo-jogo");
 const elPessoas = document.getElementById("resumo-pessoas");
 const elCaucao = document.getElementById("resumo-caucao");
 
+LIMITE_PAGAMENTO_MS = 10 * 60 * 1000
+
 // ler a reserva em andamento
 const reservaAtual = JSON.parse(localStorage.getItem("reservaAtual"));
 
@@ -55,11 +57,29 @@ btnVoltar.addEventListener("click", function (e) {
     localStorage.removeItem("reservaAtual");
 
     window.location.href = "mesas.html";
+    // expiração do pagamento (10 min)
+    const criadoMs = new Date(reservas[idx].dataCriacao).getTime();
+    const expirou = Date.now() > criadoMs + (10 * 1000);
+
+    if (expirou) {
+        reservas[idx].status = "cancelada-expirada";
+        reservas[idx].caucao.status = "nao-paga";
+
+        alterarStatusMesa(reservas[idx].mesaId, "livre");
+
+        localStorage.setItem("reservas", JSON.stringify(reservas));
+        localStorage.setItem("reservaAtual", JSON.stringify(reservas[idx]));
+
+        alert("Tempo para pagamento expirou (10 minutos). A mesa foi liberada.");
+        window.location.href = "mesas.html";
+        return;
+    }
+
 });
 
 const btnConfirmar = document.getElementById("btn-confirmar-pagamento");
 
-btnConfirmar.addEventListener("click", function (e){
+btnConfirmar.addEventListener("click", function (e) {
     e.preventDefault();
 
     const reservaAtual = JSON.parse(localStorage.getItem("reservaAtual"));
@@ -80,6 +100,24 @@ btnConfirmar.addEventListener("click", function (e){
     if (reservas[idx].status !== "pendente") {
         alert("Esta reserva não está mais pendente.");
         window.location.href = "users.html";
+        return;
+    }
+
+    // ---- Expiração de pagamento (pendente por tempo demais) ----
+    const criadoMs = new Date(reservas[idx].dataCriacao).getTime();
+    const expirou = Date.now() > criadoMs + LIMITE_PAGAMENTO_MS;
+
+    if (expirou) {
+        reservas[idx].status = "cancelada-expirada";
+        reservas[idx].caucao.status = "nao-paga";
+
+        alterarStatusMesa(reservas[idx].mesaId, "livre");
+
+        localStorage.setItem("reservas", JSON.stringify(reservas));
+        localStorage.setItem("reservaAtual", JSON.stringify(reservas[idx]));
+
+        alert("Tempo para pagamento expirou. A mesa foi liberada.");
+        window.location.href = "mesas.html";
         return;
     }
 

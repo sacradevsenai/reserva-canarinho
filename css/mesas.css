@@ -83,10 +83,25 @@
     border-radius: 3px;
 }
 
-.legenda-cor.livre     { background-color: #d4edda; border: 1px solid #b8dac4; }
-.legenda-cor.reservada { background-color: #fff3cd; border: 1px solid #f0dfa0; }
-.legenda-cor.ocupada   { background-color: #f8d7da; border: 1px solid #e8b8bb; }
-.legenda-cor.vip       { background-color: var(--verde-principal); border: 1px solid var(--verde-escuro); }
+.legenda-cor.livre {
+    background-color: #d4edda;
+    border: 1px solid #b8dac4;
+}
+
+.legenda-cor.reservada {
+    background-color: #fff3cd;
+    border: 1px solid #f0dfa0;
+}
+
+.legenda-cor.ocupada {
+    background-color: #f8d7da;
+    border: 1px solid #e8b8bb;
+}
+
+.legenda-cor.vip {
+    background-color: var(--verde-principal);
+    border: 1px solid var(--verde-escuro);
+}
 
 /* =========================
    GRID DE MESAS
@@ -414,6 +429,129 @@
     background-color: #ccc;
     cursor: not-allowed;
     transform: none;
+}
+
+/* =========================
+   PAINEL: Jogo do dia
+   ========================= */
+
+.painel-jogos {
+    display: flex;
+    gap: 16px;
+    align-items: stretch;
+    margin: 18px 0 10px;
+}
+
+.painel-jogos .jogo-atual {
+    flex: 2;
+    background: var(--verde-principal);
+    /* verde escuro */
+    color: var(--branco-gelo);
+    border-radius: 14px;
+    padding: 26px 0px;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.10);
+
+    display: flex;                      /* centralização */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 140px;
+}
+
+.painel-jogos .jogo-atual h2 {
+    margin: 0 0 6px;
+    font-size: 22px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    color: var(--amarelo-destaque);
+}
+
+.painel-jogos .jogo-atual p {
+    margin: 0;
+    font-size: 16px;
+    font-family: "Inter", sans-serif;
+    opacity: 0.95;
+}
+
+.painel-jogos .proximos-jogos {
+    flex: 1;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 14px;
+    padding: 14px 14px;
+}
+
+.painel-jogos .proximos-jogos h3 {
+    margin: 0 0 10px;
+    font-size: 14px;
+    color: #0b3b2e;
+    font-family: "Poppins", sans-serif;
+}
+
+#lista-proximos-jogos {
+    display: grid;
+    gap: 10px;
+}
+
+.proximo-jogo {
+    width: 100%;
+    text-align: left;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    background: #f7f7f7;
+    border-radius: 12px;
+    padding: 10px 12px;
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    color: #1f2937;
+}
+
+/* Se você manteve como button e desabilitou */
+.proximo-jogo:disabled {
+    opacity: 0.75;
+    cursor: not-allowed;
+}
+
+/* Responsivo */
+@media (max-width: 900px) {
+    .painel-jogos {
+        flex-direction: column;
+    }
+}
+
+
+/* =========================
+   FILA DE ESPERA (Mesas)
+   ========================= */
+
+.fila-area {
+    margin: 14px 0 18px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: #fff7db;
+    /* amarelo claro */
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.fila-area p {
+    margin: 0;
+    color: #0b3b2e;
+    font-weight: 600;
+}
+
+#btn-entrar-fila {
+    white-space: nowrap;
+}
+
+/* Se quiser o botão com cara "de fila" sem mexer no .btn-destaque global */
+#btn-entrar-fila {
+    border: none;
+    border-radius: 12px;
+    padding: 10px 14px;
 }
 
 @media (max-width: 480px) {

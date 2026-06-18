@@ -18,10 +18,89 @@ const mesas = [
 ];
 
 const jogos = [
-    { id: 1, descricao: "Brasil x Argentina", dataHora: "2026-06-20T18:30", tipo: "brasil" },
+    { id: 1, descricao: "Brasil x Argentina", dataHora: "2026-06-18T18:30", tipo: "brasil" },
     { id: 2, descricao: "Brasil x França", dataHora: "2026-06-24T15:00", tipo: "brasil" },
     { id: 3, descricao: "Final da Copa", dataHora: "2026-06-28T20:00", tipo: "final" },
 ];
+
+// ─── ORGANIZAÇÃO DOS JOGOS ───────────────────────────────────────────────────
+
+function jogosOrdenados() {
+    return [...jogos].sort((a, b) => new Date(a.dataHora) - new Date(b.dataHora));
+}
+
+function calcularJogoAtivoId() {
+    const lista = jogosOrdenados();
+    const agora = Date.now();
+
+    for (let i = 0; i < lista.length; i++) {
+        const inicio = new Date(lista[i].dataHora).getTime();
+        const fim = inicio + (2 * 60 * 60 * 1000); // +2h
+
+        // jogo ativo é o primeiro que ainda não "terminou há 2h"
+        if (agora < fim) return lista[i].id;
+    }
+    return lista[0].id;
+}
+
+function setJogoAtivo(id) {
+    localStorage.setItem("jogoAtivoId", String(id));
+}
+
+function getJogoAtivoId() {
+    const salvo = localStorage.getItem("jogoAtivoId");
+    if (salvo) return parseInt(salvo, 10);
+    return calcularJogoAtivoId();
+}
+
+function renderPainelJogos() {
+    const titulo = document.getElementById("jogo-atual-titulo");
+    const horario = document.getElementById("jogo-atual-horario");
+    const listaDiv = document.getElementById("lista-proximos-jogos");
+
+    // Se não estiver na mesas.html, não faz nada
+    if (!titulo || !horario || !listaDiv) return;
+
+    const lista = jogosOrdenados();
+
+    // atualiza automaticamente se já passou do jogo+2h
+    const novoAtivo = calcularJogoAtivoId();
+    const ativoSalvo = getJogoAtivoId();
+    if (ativoSalvo !== novoAtivo) setJogoAtivo(novoAtivo);
+
+    const ativoId = getJogoAtivoId();
+    const jogoAtivo = lista.find(j => j.id === ativoId) || lista[0];
+
+    titulo.textContent = `Jogo do dia: ${jogoAtivo.descricao}`;
+    horario.textContent = `Horário: ${new Date(jogoAtivo.dataHora).toLocaleString("pt-BR")}`;
+
+    // próximos 2
+    const idx = lista.findIndex(j => j.id === jogoAtivo.id);
+    const proximos = [];
+    if (idx + 1 < lista.length) proximos.push(lista[idx + 1]);
+    if (idx + 2 < lista.length) proximos.push(lista[idx + 2]);
+
+    listaDiv.innerHTML = "";
+    if (proximos.length === 0) {
+        listaDiv.textContent = "Sem próximos jogos cadastrados.";
+        return;
+    }
+
+    proximos.forEach(j => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "proximo-jogo";
+        btn.textContent = `${j.descricao} — ${new Date(j.dataHora).toLocaleString("pt-BR")}`;
+
+        // opcional (legal pra demo): clicar muda o jogo ativo manualmente
+        btn.onclick = () => {
+            setJogoAtivo(j.id);
+            renderPainelJogos();
+        };
+
+        listaDiv.appendChild(btn);
+    });
+}
 
 // ─── Cálculo de caução (RN03) ────────────────────────────────────────────────
 function calcularCaucao(jogo, mesa, numeroPessoas) {
@@ -73,6 +152,13 @@ function abrirModal(mesa) {
     document.getElementById("aviso-capacidade").textContent = "";
     document.getElementById("modal-caucao").style.display = "none";
     document.getElementById("btn-reservar").disabled = true;
+
+    const select = document.getElementById("select-jogo");
+    if (select) {
+        select.value = String(getJogoAtivoId());
+        select.disabled = true; // trava: só reserva para o jogo do dia
+    }
+    atualizarCaucao();
 
     // Exibe o modal
     document.getElementById("modal-overlay").style.display = "flex";
@@ -320,3 +406,6 @@ function entrarNaFilaEspera() {
 carregarMesas();
 aplicarStatusNoGrid();
 atualizarUIFilaEspera();
+
+renderPainelJogos();
+setInterval(renderPainelJogos, 10000); // atualiza painel a cada 10s (só UI)

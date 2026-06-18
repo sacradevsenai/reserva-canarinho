@@ -219,9 +219,158 @@ function carregarDadosAdmin() {
         if (mesa.categoria === "vip") item.classList.add("vip");
 
         item.textContent = String(mesa.numero);
+        item.title = `Mesa ${mesa.numero} (${mesa.status})`;
+
+        // ENCERRAR MESA: só permite clicar se estiver OCUPADA
+        if (mesa.status === "ocupada") {
+            item.style.cursor = "pointer";
+
+            item.addEventListener("click", function () {
+                const ok = confirm(`Encerrar Mesa ${mesa.numero}? Ela voltará para LIVRE.`);
+                if (!ok) return;
+
+                // 1) libera a mesa
+                alterarStatusMesa(mesa.id, "livre");
+
+                // 2) (recomendado) marca a reserva checkin dessa mesa como encerrada
+                const reservas = JSON.parse(localStorage.getItem("reservas")) || [];
+
+                // pega a última reserva "checkin" dessa mesa (varre de trás pra frente)
+                for (let i = reservas.length - 1; i >= 0; i--) {
+                    if (reservas[i].mesaId === mesa.id && reservas[i].status === "checkin") {
+                        reservas[i].status = "encerrada";
+                        reservas[i].dataEncerramento = new Date().toISOString();
+                        const raw = localStorage.getItem("reservaAtual");
+                        if (raw) {
+                            const ra = JSON.parse(raw);
+                            if (ra.id === reservas[i].id) {
+                                localStorage.removeItem("reservaAtual");
+                            }
+                        }
+                        break;
+                    }
+                }
+
+                localStorage.setItem("reservas", JSON.stringify(reservas));
+
+                // 3) Recarrega o painel admin (métricas + mini-mapa)
+                carregarDadosAdmin();
+            });
+        }
+
         mapa.appendChild(item);
+
+        const corpo = document.getElementById("corpo-checkins");
+        if (!corpo) return;
+
+        corpo.innerHTML = "";
+
+        const reservas = JSON.parse(localStorage.getItem("reservas")) || [];
+
+        const relevantes = reservas.filter(r =>
+            r.status === "confirmada" || r.status === "checkin" || r.status === "encerrada"
+        );
+
+        if (relevantes.length === 0) {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `<td colspan="5" class="tabela-vazia">Nenhum check-in registrado ainda.</td>`;
+            corpo.appendChild(tr);
+            return;
+        }
+        relevantes.forEach(r => {
+            const mesa = mesas.find(m => m.id === r.mesaId);
+            const jogo = jogos.find(j => j.id === r.jogoId);
+
+            const clienteTexto = r.clienteNome || r.clienteEmail || "—";
+            const mesaTexto = mesa ? `Mesa ${mesa.numero}` : `Mesa ${r.mesaId}`;
+            const jogoTexto = jogo ? jogo.descricao : `Jogo ${r.jogoId}`;
+            const horaCheckin = r.horarioCheckin ? new Date(r.horarioCheckin).toLocaleString("pt-BR") : "—";
+
+            let statusTexto = r.status;
+            if (r.status === "confirmada") statusTexto = "Aguardando check-in";
+            if (r.status === "checkin") statusTexto = "Check-in feito";
+            if (r.status === "encerrada") statusTexto = "Encerrada";
+
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td>${clienteTexto}</td>
+                <td>${mesaTexto}</td>
+                <td>${jogoTexto}</td>
+                <td>${horaCheckin}</td>
+                <td>${statusTexto}</td>
+            `;
+            corpo.appendChild(tr);
+        });
     });
 
+
+
+
+
+}
+
+// FILA DE ESPERA
+
+const filaDiv = document.getElementById("fila-espera");
+if (filaDiv) {
+    const fila = JSON.parse(localStorage.getItem("filaEspera")) || [];
+    filaDiv.innerHTML = "";
+
+    if (fila.length === 0) {
+        filaDiv.innerHTML = `<p class="tabela-vazia">Nenhum cliente na fila de espera.</p>`;
+    } else {
+        fila.forEach(p => {
+            const item = document.createElement("div");
+            item.className = "fila-item";
+            item.textContent = `${p.clienteNome} (${p.numeroPessoas} pessoas) — Jogo ${p.jogoId}`;
+
+            item.style.cursor = "pointer";
+
+            item.addEventListener("click", function () {
+                const mesaLivre = mesas.find(m => m.status === "livre");
+                if (!mesaLivre) {
+                    alert("Ainda não há mesa livre.");
+                    return;
+                }
+
+                const ok = confirm(`Alocar ${p.clienteNome} na Mesa ${mesaLivre.numero}?`);
+                if (!ok) return;
+
+                // 1) mesa vira OCUPADA imediatamente (cliente entrou no bar)
+                alterarStatusMesa(mesaLivre.id, "ocupada");
+
+                // 2) cria registro de reserva como CHECKIN (pra entrar na tabela e fechar ciclo)
+                const reservas = JSON.parse(localStorage.getItem("reservas")) || [];
+                reservas.push({
+                    id: Date.now().toString(),
+                    mesaId: mesaLivre.id,
+                    jogoId: p.jogoId,
+                    numeroPessoas: p.numeroPessoas,
+                    dataCriacao: new Date().toISOString(),
+                    status: "checkin",
+                    horarioCheckin: new Date().toISOString(),
+                    caucao: { valor: 0, status: "isento" },
+                    codigoCheckin: null,
+                    checkinUrl: null,
+                    clienteNome: p.clienteNome,
+                    clienteEmail: p.clienteEmail
+                });
+                localStorage.setItem("reservas", JSON.stringify(reservas));
+
+                // 3) remove da fila
+                const filaAtual = JSON.parse(localStorage.getItem("filaEspera")) || [];
+                const novaFila = filaAtual.filter(x => x.id !== p.id);
+                localStorage.setItem("filaEspera", JSON.stringify(novaFila));
+
+                // 4) recarrega painel admin (métricas + mapa + fila + tabela)
+                carregarDadosAdmin();
+
+                // 5) se estiver na página de mesas em outra aba, o mapa vai atualizar pelo seu timer/sync
+            });
+
+            filaDiv.appendChild(item);
+        });
+    }
 }
 
 // ─── Logout ──────────────────────────────────────────────────────────────────

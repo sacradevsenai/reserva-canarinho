@@ -142,7 +142,10 @@ function confirmarReserva() {
             valor: valor,
             status: "pendente"
         },
-        codigoCheckin: null // gerado em pagamento.html após confirmação
+        codigoCheckin: null, // gerado em pagamento.html após confirmação
+
+        clienteNome: usuario.nome,
+        clienteEmail: usuario.email,
     };
 
     // Salva reserva pendente
@@ -236,6 +239,83 @@ function aplicarStatusNoGrid() {
     });
 }
 
+// FILA DE ESPERA
+
+function carregarFilaEspera() {
+    return JSON.parse(localStorage.getItem("filaEspera")) || [];
+}
+
+function salvarFilaEspera(fila) {
+    localStorage.setItem("filaEspera", JSON.stringify(fila));
+}
+
+function atualizarUIFilaEspera() {
+    const area = document.getElementById("fila-area");
+    const btn = document.getElementById("btn-entrar-fila");
+    if (!area || !btn) return;
+
+    const livres = mesas.filter(m => m.status === "livre").length;
+
+    // só aparece se NÃO houver mesas livres
+    area.style.display = (livres === 0) ? "block" : "none";
+}
+
+function entrarNaFilaEspera() {
+    const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+    if (!usuario) {
+        alert("Faça login para entrar na fila de espera.");
+        window.location.href = "login.html";
+        return;
+    }
+
+    if (usuario.tipo !== "cliente") {
+        alert("A fila de espera é destinada aos clientes.");
+        return;
+    }
+
+    const fila = carregarFilaEspera();
+
+    // evita duplicar o mesmo cliente na fila
+    const jaEsta = fila.some(p => p.clienteEmail === usuario.email);
+    if (jaEsta) {
+        alert("Você já está na fila de espera.");
+        return;
+    }
+
+    // Dados mínimos (sem modal novo)
+    const pessoas = parseInt(prompt("Quantas pessoas?", "2"), 10);
+    if (!pessoas || pessoas < 1) {
+        alert("Número de pessoas inválido.");
+        return;
+    }
+
+    // escolhe um jogo por prompt simples (mantém seu nível)
+    const jogoStr = prompt("Qual jogo? Digite 1, 2 ou 3", "1");
+    const jogoId = parseInt(jogoStr, 10);
+    if (![1, 2, 3].includes(jogoId)) {
+        alert("Jogo inválido.");
+        return;
+    }
+
+    fila.push({
+        id: Date.now().toString(),
+        clienteNome: usuario.nome,
+        clienteEmail: usuario.email,
+        numeroPessoas: pessoas,
+        jogoId: jogoId,
+        entrouEm: new Date().toISOString()
+    });
+
+    salvarFilaEspera(fila);
+    alert("Você entrou na fila de espera. Aguarde liberação de mesa.");
+
+    const btnFila = document.getElementById("btn-entrar-fila");
+    if (btnFila) {
+        btnFila.addEventListener("click", entrarNaFilaEspera);
+    }
+}
+
 // ─── Inicializa ──────────────────────────────────────────────────────────────
 carregarMesas();
 aplicarStatusNoGrid();
+atualizarUIFilaEspera();

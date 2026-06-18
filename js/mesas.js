@@ -256,8 +256,13 @@ function atualizarUIFilaEspera() {
 
     const livres = mesas.filter(m => m.status === "livre").length;
 
-    // só aparece se NÃO houver mesas livres
-    area.style.display = (livres === 0) ? "block" : "none";
+    if (livres === 0) {
+        area.style.display = "block";
+        btn.onclick = entrarNaFilaEspera;  // liga a ação aqui
+    } else {
+        area.style.display = "none";
+        btn.onclick = null;                // desliga quando não precisa
+    }
 }
 
 function entrarNaFilaEspera() {
@@ -309,10 +314,6 @@ function entrarNaFilaEspera() {
     salvarFilaEspera(fila);
     alert("Você entrou na fila de espera. Aguarde liberação de mesa.");
 
-    const btnFila = document.getElementById("btn-entrar-fila");
-    if (btnFila) {
-        btnFila.addEventListener("click", entrarNaFilaEspera);
-    }
 }
 
 // ─── Inicializa ──────────────────────────────────────────────────────────────

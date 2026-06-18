@@ -104,7 +104,7 @@ function rotinaCancelamentoAutomatico() {
 
 // ─── Inicia a rotina automática ao carregar qualquer página com este script ──
 // Intervalo em 30s (pode ser reduzido para demonstração)
-setInterval(rotinaCancelamentoAutomatico, 10000);
+setInterval(rotinaCancelamentoAutomatico, 30000);
 rotinaCancelamentoAutomatico(); // executa imediatamente ao carregar
 
 // ─── Listener do botão de check-in (só ativo em checkin.html) ───────────────

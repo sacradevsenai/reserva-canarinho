@@ -361,6 +361,7 @@ if (filaDiv) {
                 const filaAtual = JSON.parse(localStorage.getItem("filaEspera")) || [];
                 const novaFila = filaAtual.filter(x => x.id !== p.id);
                 localStorage.setItem("filaEspera", JSON.stringify(novaFila));
+                item.remove();
 
                 // 4) recarrega painel admin (métricas + mapa + fila + tabela)
                 carregarDadosAdmin();
@@ -371,6 +372,7 @@ if (filaDiv) {
             filaDiv.appendChild(item);
         });
     }
+
 }
 
 // ─── Logout ──────────────────────────────────────────────────────────────────

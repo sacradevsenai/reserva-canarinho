@@ -271,6 +271,7 @@ footer .contato p {
         flex-direction: column;
         gap: 12px;
         text-align: center;
+        /* margin-bottom: 5rem; */
     }
 
     header nav ul {
@@ -282,4 +283,5 @@ footer .contato p {
     .hero h1 {
         font-size: 2rem;
     }
+
 }

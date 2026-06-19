@@ -448,7 +448,7 @@
     /* verde escuro */
     color: var(--branco-gelo);
     border-radius: 14px;
-    padding: 26px 0px;
+    padding: 26px 20px;
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.10);
 
     display: flex;                      /* centralização */

@@ -110,31 +110,32 @@ Reservas **confirmadas** (pagas) sem check-in até o limite:
 
 ```text
 .
+.
 ├── css/
-│   ├── checkin-styles.css
-│   ├── login-style.css
-│   ├── mesas.css
-│   ├── pagamento-style.css
-│   ├── style.css
-│   └── users-style.css
+│   ├── checkin-styles.css    # Layout do painel de validação de códigos
+│   ├── login-style.css       # Estilização das telas de acesso e cadastro
+│   ├── mesas.css             # Matriz e grid dinâmico do mapa de mesas
+│   ├── pagamento-style.css   # Mock da interface do gateway de pagamento
+│   ├── style.css             # Identidade visual global e variáveis de cores
+│   └── users-style.css       # Painel e área restrita do cliente (Perfil)
 ├── img/
-│   └── logo.svg
+│   └── logo.svg              # Identidade visual vetorizada do ReservaCanarinho
 ├── js/
 │   ├── lib/
-│   │   └── qrcode.min.js
-│   ├── auth.js
-│   ├── checkin.js
-│   ├── mesas.js
-│   ├── pagamento.js
-│   └── script.js
-├── cadastro.html
-├── checkin.html
-├── index.html
-├── login.html
-├── mesas.html
-├── pagamento.html
-├── README.md
-└── users.html
+│   │   └── qrcode.min.js     # Engine de terceiros para renderização de QR Code
+│   ├── auth.js               # Regras de login, registro e controle de sessão
+│   ├── checkin.js            # Lógica de validação de tokens e querystrings
+│   ├── mesas.js              # State machine das mesas, filtros e fluxos de reserva
+│   ├── pagamento.js          # Cálculos de caução e geração de códigos pós-pago
+│   └── script.js             # Inicializador global e triggers automáticos (setInterval)
+├── cadastro.html             # View de registro de novas contas
+├── checkin.html              # View operacional de recepção (Check-in)
+├── index.html                # Landing page / Entrada da aplicação
+├── login.html                # View de autenticação de usuários
+├── mesas.html                # Mapa interativo de mesas e seleção de jogos
+├── pagamento.html            # Módulo de checkout de segurança
+├── README.md                 # Documentação técnica do repositório
+└── users.html                # Painel do cliente e carteira de QR Codes
 ```
 
 ---

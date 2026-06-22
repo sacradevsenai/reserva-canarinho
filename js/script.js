@@ -12,3 +12,14 @@ olho.addEventListener("click", function () {
     }
 });
 
+function simularRecuperacao(event) {
+    // Evita que a página role para o topo ao clicar no "#"
+    event.preventDefault(); 
+    
+    let email = prompt("Digite seu e-mail para recuperar a senha:");
+    
+    if (email) {
+        alert("Sucesso! Um link fictício de recuperação foi enviado para: " + email);
+        console.log("Simulação de backend para o e-mail:", email);
+    }
+}

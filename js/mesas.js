@@ -18,10 +18,19 @@ const mesas = [
 ];
 
 const jogos = [
-    { id: 1, descricao: "Brasil x Argentina", dataHora: "2026-06-20T18:30", tipo: "brasil" },
-    { id: 2, descricao: "Brasil x França", dataHora: "2026-06-24T15:00", tipo: "brasil" },
-    { id: 3, descricao: "Final da Copa", dataHora: "2026-06-28T20:00", tipo: "final" },
+    // Fase de Grupos (Grupo C)
+    { id: 1, descricao: "Brasil x Marrocos", dataHora: "2026-06-13T18:00", tipo: "fase de grupos" },
+    { id: 2, descricao: "Brasil x Haiti", dataHora: "2026-06-19T21:00", tipo: "fase de grupos" },
+    { id: 3, descricao: "Escócia x Brasil", dataHora: "2026-06-24T19:00", tipo: "fase de grupos" },
 
+    // Fase do Mata-Mata (Cenário de classificação)
+    { id: 4, descricao: "Brasil x 3º Colocado (Grupo A/B/F)", dataHora: "2026-06-29T16:00", tipo: "16 avos de final" },
+    { id: 5, descricao: "Brasil x Espanha", dataHora: "2026-07-04T20:00", tipo: "oitavas de final" },
+    { id: 6, descricao: "Brasil x Alemanha", dataHora: "2026-07-10T17:00", tipo: "quartas de final" },
+    { id: 7, descricao: "Brasil x Argentina", dataHora: "2026-07-15T21:00", tipo: "semifinal" },
+    
+    // A Grande Final
+    { id: 8, descricao: "Brasil x França", dataHora: "2026-07-19T17:00", tipo: "final" }
 ];
 
 // ─── ORGANIZAÇÃO DOS JOGOS ───────────────────────────────────────────────────

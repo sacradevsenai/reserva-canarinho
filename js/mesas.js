@@ -17,20 +17,22 @@ const mesas = [
     { id: 12, numero: 12, capacidade: 6, categoria: "comum", status: "livre" },
 ];
 
+
+
 const jogos = [
     // Fase de Grupos (Grupo C)
-    { id: 1, descricao: "Brasil x Marrocos", dataHora: "2026-06-13T18:00", tipo: "fase de grupos" },
+    { id: 1, descricao: "Brasil x Marrocos", dataHora: "2026-06-13T18:00", tipo: "brasil" },
     { id: 2, descricao: "Brasil x Haiti", dataHora: "2026-06-19T21:00", tipo: "fase de grupos" },
     { id: 3, descricao: "Escócia x Brasil", dataHora: "2026-06-24T19:00", tipo: "fase de grupos" },
 
     // Fase do Mata-Mata (Cenário de classificação)
-    { id: 4, descricao: "Brasil x 3º Colocado (Grupo A/B/F)", dataHora: "2026-06-29T16:00", tipo: "16 avos de final" },
+    { id: 4, descricao: "Brasil x 3º Colocado (Grupo A/B/F)", dataHora: "2026-06-29T16:00", tipo: "brasil" },
     { id: 5, descricao: "Brasil x Espanha", dataHora: "2026-07-04T20:00", tipo: "oitavas de final" },
     { id: 6, descricao: "Brasil x Alemanha", dataHora: "2026-07-10T17:00", tipo: "quartas de final" },
     { id: 7, descricao: "Brasil x Argentina", dataHora: "2026-07-15T21:00", tipo: "semifinal" },
-    
+
     // A Grande Final
-    { id: 8, descricao: "Brasil x França", dataHora: "2026-07-19T17:00", tipo: "final" }
+    { id: 8, descricao: "Brasil x França", dataHora: "2026-07-19T17:00", tipo: "final" },
 ];
 
 // ─── ORGANIZAÇÃO DOS JOGOS ───────────────────────────────────────────────────
@@ -104,6 +106,20 @@ function renderPainelJogos() {
     });
 }
 
+// montagem de options do select
+
+function popularSelectJogos(selectEl) {
+    // recria do zero (evita ficar desatualizado)
+    selectEl.innerHTML = `<option value="" disabled>Selecione um jogo</option>`;
+
+    jogos.forEach(j => {
+        const opt = document.createElement("option");
+        opt.value = String(j.id);
+        opt.textContent = `${j.descricao} — ${new Date(j.dataHora).toLocaleString("pt-BR")}`;
+        selectEl.appendChild(opt);
+    });
+}
+
 // ─── Cálculo de caução (RN03) ────────────────────────────────────────────────
 function calcularCaucao(jogo, mesa, numeroPessoas) {
     const valorBase = jogo.tipo === "final" ? 30 : 20;
@@ -157,6 +173,7 @@ function abrirModal(mesa) {
 
     const select = document.getElementById("select-jogo");
     if (select) {
+        popularSelectJogos(select);
         select.value = String(getJogoAtivoId());
         select.disabled = true; // trava: só reserva para o jogo do dia
     }
